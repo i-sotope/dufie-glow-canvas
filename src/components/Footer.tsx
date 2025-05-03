@@ -1,4 +1,5 @@
 
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Instagram, Facebook, Twitter } from "lucide-react";
 
@@ -29,14 +30,14 @@ const Footer = () => {
             </div>
           </div>
           
-          {/* Quick Links */}
+          {/* Shop Links */}
           <div>
             <h4 className="font-medium mb-4">Shop</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">All Products</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Bestsellers</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">New Arrivals</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Gift Sets</a></li>
+              <li><Link to="/shop/all-products" className="text-sm text-muted-foreground hover:text-foreground transition-colors">All Products</Link></li>
+              <li><Link to="/shop/bestsellers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Bestsellers</Link></li>
+              <li><Link to="/shop/new-arrivals" className="text-sm text-muted-foreground hover:text-foreground transition-colors">New Arrivals</Link></li>
+              <li><Link to="/shop/gift-sets" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Gift Sets</Link></li>
             </ul>
           </div>
           
@@ -44,10 +45,10 @@ const Footer = () => {
           <div>
             <h4 className="font-medium mb-4">Company</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Our Story</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Sustainability</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Ingredients</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Press</a></li>
+              <li><Link to="/company/our-story" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Our Story</Link></li>
+              <li><Link to="/company/sustainability" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Sustainability</Link></li>
+              <li><Link to="/company/ingredients" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Ingredients</Link></li>
+              <li><Link to="/company/press" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Press</Link></li>
             </ul>
           </div>
           
@@ -55,10 +56,10 @@ const Footer = () => {
           <div>
             <h4 className="font-medium mb-4">Support</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact Us</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">FAQs</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Shipping & Returns</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</a></li>
+              <li><Link to="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact Us</Link></li>
+              <li><Link to="/faqs" className="text-sm text-muted-foreground hover:text-foreground transition-colors">FAQs</Link></li>
+              <li><Link to="/shipping-returns" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Shipping & Returns</Link></li>
+              <li><Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
         </div>
@@ -68,9 +69,9 @@ const Footer = () => {
             © {new Date().getFullYear()} Dufie's Skincare. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms</a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy</a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Cookies</a>
+            <Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms</Link>
+            <Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy</Link>
+            <Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Cookies</Link>
           </div>
         </div>
       </div>

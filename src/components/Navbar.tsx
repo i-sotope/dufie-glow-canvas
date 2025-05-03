@@ -1,8 +1,17 @@
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
 import { ShoppingCart, Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { 
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink
+} from "@/components/ui/navigation-menu";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,28 +21,28 @@ const Navbar = () => {
       <div className="container flex items-center justify-between py-4">
         {/* Logo */}
         <div className="flex-shrink-0">
-          <a href="/" className="font-playfair text-2xl font-semibold tracking-tight">
+          <Link to="/" className="font-playfair text-2xl font-semibold tracking-tight">
             DUFIE'S
-          </a>
+          </Link>
         </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="/" className="text-sm font-medium hover:text-primary/80 transition-colors">
+          <Link to="/" className="text-sm font-medium hover:text-primary/80 transition-colors">
             Home
-          </a>
-          <a href="/shop" className="text-sm font-medium hover:text-primary/80 transition-colors">
+          </Link>
+          <Link to="/shop" className="text-sm font-medium hover:text-primary/80 transition-colors">
             Shop
-          </a>
-          <a href="/about" className="text-sm font-medium hover:text-primary/80 transition-colors">
+          </Link>
+          <Link to="/about" className="text-sm font-medium hover:text-primary/80 transition-colors">
             About
-          </a>
-          <a href="/blog" className="text-sm font-medium hover:text-primary/80 transition-colors">
+          </Link>
+          <Link to="/journal" className="text-sm font-medium hover:text-primary/80 transition-colors">
             Journal
-          </a>
-          <a href="/contact" className="text-sm font-medium hover:text-primary/80 transition-colors">
+          </Link>
+          <Link to="/contact" className="text-sm font-medium hover:text-primary/80 transition-colors">
             Contact
-          </a>
+          </Link>
         </nav>
 
         {/* Action Buttons */}
@@ -70,41 +79,41 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden fixed inset-0 z-50 bg-background pt-16">
           <nav className="container flex flex-col space-y-6 py-8">
-            <a 
-              href="/" 
+            <Link 
+              to="/" 
               className="text-lg font-medium border-b border-border pb-4"
               onClick={() => setIsMenuOpen(false)}
             >
               Home
-            </a>
-            <a 
-              href="/shop" 
+            </Link>
+            <Link 
+              to="/shop" 
               className="text-lg font-medium border-b border-border pb-4"
               onClick={() => setIsMenuOpen(false)}
             >
               Shop
-            </a>
-            <a 
-              href="/about" 
+            </Link>
+            <Link 
+              to="/about" 
               className="text-lg font-medium border-b border-border pb-4"
               onClick={() => setIsMenuOpen(false)}
             >
               About
-            </a>
-            <a 
-              href="/blog" 
+            </Link>
+            <Link 
+              to="/journal" 
               className="text-lg font-medium border-b border-border pb-4"
               onClick={() => setIsMenuOpen(false)}
             >
               Journal
-            </a>
-            <a 
-              href="/contact" 
+            </Link>
+            <Link 
+              to="/contact" 
               className="text-lg font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
-            </a>
+            </Link>
           </nav>
         </div>
       )}

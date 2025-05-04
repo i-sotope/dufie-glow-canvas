@@ -1,5 +1,6 @@
 
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { toast } from "@/components/ui/sonner";
 
 // Define user type
 export interface User {
@@ -27,6 +28,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const storedUser = localStorage.getItem('dufie_user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
+      toast.success("Welcome back!", {
+        description: "You've been automatically signed in.",
+      });
     }
     setLoading(false);
   }, []);
@@ -45,8 +49,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       setUser(mockUser);
       localStorage.setItem('dufie_user', JSON.stringify(mockUser));
+      toast.success("Sign in successful!", {
+        description: "Welcome to Dufie's Skincare.",
+      });
     } catch (error) {
       console.error('Error signing in with Google:', error);
+      toast.error("Sign in failed", {
+        description: "Something went wrong. Please try again.",
+      });
     } finally {
       setLoading(false);
     }
@@ -57,8 +67,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       setUser(null);
       localStorage.removeItem('dufie_user');
+      toast.success("Signed out successfully!", {
+        description: "You have been signed out of your account.",
+      });
     } catch (error) {
       console.error('Error signing out:', error);
+      toast.error("Sign out failed", {
+        description: "Something went wrong. Please try again.",
+      });
     } finally {
       setLoading(false);
     }

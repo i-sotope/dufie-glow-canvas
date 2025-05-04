@@ -10,10 +10,12 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "lucide-react";
+import { User, Settings, ShoppingBag, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const UserDropdown = () => {
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   
   if (!user) return null;
 
@@ -24,6 +26,10 @@ const UserDropdown = () => {
         .join('')
         .toUpperCase()
     : 'U';
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
 
   return (
     <DropdownMenu>
@@ -36,14 +42,29 @@ const UserDropdown = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>
+          <div className="flex flex-col">
+            <span>{user.name}</span>
+            <span className="text-xs text-muted-foreground">{user.email}</span>
+          </div>
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">Orders</DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">Settings</DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" onClick={() => handleNavigate('/profile')}>
+          <User className="mr-2 h-4 w-4" />
+          <span>Profile</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" onClick={() => handleNavigate('/orders')}>
+          <ShoppingBag className="mr-2 h-4 w-4" />
+          <span>Orders</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" onClick={() => handleNavigate('/settings')}>
+          <Settings className="mr-2 h-4 w-4" />
+          <span>Settings</span>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={signOut} className="cursor-pointer text-destructive">
-          Log out
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

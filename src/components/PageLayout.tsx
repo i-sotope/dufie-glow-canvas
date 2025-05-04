@@ -1,5 +1,6 @@
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useAuth } from "@/contexts/AuthContext";
@@ -13,12 +14,17 @@ interface PageLayoutProps {
 
 const PageLayout = ({ children, className = "", requireAuth = false }: PageLayoutProps) => {
   const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
-  // Check if authentication is required but user is not logged in
-  if (requireAuth && !loading && !user) {
-    toast.error("You need to sign in to access this page.");
-    // You could redirect here in a real app
-  }
+  useEffect(() => {
+    // Check if authentication is required but user is not logged in
+    if (requireAuth && !loading && !user) {
+      toast.error("Authentication required", {
+        description: "You need to sign in to access this page."
+      });
+      navigate("/");
+    }
+  }, [requireAuth, user, loading, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col">

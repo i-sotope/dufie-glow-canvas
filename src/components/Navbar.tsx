@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
-import { ShoppingCart, Menu, X, User } from "lucide-react";
+import { ShoppingCart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { 
   NavigationMenu,
@@ -12,9 +12,13 @@ import {
   NavigationMenuContent,
   NavigationMenuLink
 } from "@/components/ui/navigation-menu";
+import { useAuth } from "@/contexts/AuthContext";
+import SignInButton from "./auth/SignInButton";
+import UserDropdown from "./auth/UserDropdown";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b">
@@ -49,10 +53,13 @@ const Navbar = () => {
         <div className="flex items-center space-x-4">
           <ThemeToggle />
           
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <User className="h-5 w-5" />
-            <span className="sr-only">Account</span>
-          </Button>
+          {user ? (
+            <UserDropdown />
+          ) : (
+            <div className="hidden md:block">
+              <SignInButton variant="ghost" />
+            </div>
+          )}
           
           <Button variant="ghost" size="icon" className="rounded-full relative">
             <ShoppingCart className="h-5 w-5" />
@@ -109,11 +116,17 @@ const Navbar = () => {
             </Link>
             <Link 
               to="/contact" 
-              className="text-lg font-medium"
+              className="text-lg font-medium border-b border-border pb-4"
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
             </Link>
+            
+            {!user && (
+              <div className="pt-4">
+                <SignInButton />
+              </div>
+            )}
           </nav>
         </div>
       )}

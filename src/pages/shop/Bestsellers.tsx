@@ -4,6 +4,7 @@ import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Star } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 
 // Sample bestselling product data
 const bestsellerProducts = [
@@ -46,6 +47,8 @@ const bestsellerProducts = [
 ];
 
 const Bestsellers = () => {
+  const { addToCart, isLoading } = useCart();
+  
   // Function to render stars based on rating
   const renderStars = (rating: number) => {
     return Array(5).fill(0).map((_, i) => (
@@ -60,6 +63,15 @@ const Bestsellers = () => {
         }`}
       />
     ));
+  };
+
+  const handleAddToCart = (product: any) => {
+    // Convert price string to number
+    const priceNum = parseFloat(product.price.replace('$', ''));
+    addToCart({
+      ...product,
+      price: priceNum
+    });
   };
 
   return (
@@ -96,7 +108,13 @@ const Bestsellers = () => {
                 <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
                 <div className="flex items-center justify-between pt-2">
                   <span className="font-medium">{product.price}</span>
-                  <Button variant="outline" size="sm" className="rounded-full">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="rounded-full"
+                    onClick={() => handleAddToCart(product)}
+                    disabled={isLoading}
+                  >
                     Add to Cart
                   </Button>
                 </div>

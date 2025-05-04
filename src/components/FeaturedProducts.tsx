@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, Star } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 
 const products = [
   {
@@ -51,6 +52,7 @@ const FeaturedProducts = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const { addToCart, isLoading } = useCart();
 
   const checkScrollability = () => {
     if (!scrollContainerRef.current) return;
@@ -71,6 +73,15 @@ const FeaturedProducts = () => {
     scrollContainerRef.current.scrollTo({
       left: newScrollLeft,
       behavior: 'smooth'
+    });
+  };
+
+  const handleAddToCart = (product: any) => {
+    // Convert price string to number
+    const priceNum = parseFloat(product.price.replace('$', ''));
+    addToCart({
+      ...product,
+      price: priceNum
     });
   };
 
@@ -147,7 +158,13 @@ const FeaturedProducts = () => {
                 <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
                 <div className="flex items-center justify-between pt-2">
                   <span className="font-medium">{product.price}</span>
-                  <Button variant="outline" size="sm" className="rounded-full">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="rounded-full"
+                    onClick={() => handleAddToCart(product)}
+                    disabled={isLoading}
+                  >
                     Add to Cart
                   </Button>
                 </div>

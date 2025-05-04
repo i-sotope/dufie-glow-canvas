@@ -5,6 +5,7 @@ import PageHeader from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Star, Filter, X, ChevronDown } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 
 // Sample product data
 const products = [
@@ -98,6 +99,7 @@ const AllProducts = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeTag, setActiveTag] = useState("All");
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const { addToCart, isLoading } = useCart();
   
   const filteredProducts = products.filter(product => {
     const categoryMatch = activeCategory === "All" || product.category === activeCategory;
@@ -118,6 +120,15 @@ const AllProducts = () => {
         }`}
       />
     ));
+  };
+
+  const handleAddToCart = (product: any) => {
+    // Convert price string to number
+    const priceNum = parseFloat(product.price.replace('$', ''));
+    addToCart({
+      ...product,
+      price: priceNum
+    });
   };
 
   return (
@@ -285,7 +296,13 @@ const AllProducts = () => {
                   <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
                   <div className="flex items-center justify-between pt-2">
                     <span className="font-medium">{product.price}</span>
-                    <Button variant="outline" size="sm" className="rounded-full">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="rounded-full"
+                      onClick={() => handleAddToCart(product)}
+                      disabled={isLoading}
+                    >
                       Add to Cart
                     </Button>
                   </div>

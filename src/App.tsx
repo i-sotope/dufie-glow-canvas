@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { CartProvider } from "./contexts/CartContext";
 
 // Main Pages
 import Index from "./pages/Index";
@@ -12,6 +13,7 @@ import Shop from "./pages/Shop";
 import About from "./pages/About";
 import Journal from "./pages/Journal";
 import Contact from "./pages/Contact";
+import Cart from "./pages/Cart";
 
 // Shop Subpages
 import AllProducts from "./pages/shop/AllProducts";
@@ -31,6 +33,7 @@ import ShippingReturns from "./pages/support/ShippingReturns";
 import PrivacyPolicy from "./pages/support/PrivacyPolicy";
 
 import NotFound from "./pages/NotFound";
+import AuthPage from "./pages/AuthPage";
 
 const queryClient = new QueryClient();
 
@@ -38,39 +41,43 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            
-            {/* Main Pages */}
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/journal" element={<Journal />} />
-            <Route path="/contact" element={<Contact />} />
-            
-            {/* Shop Subpages */}
-            <Route path="/shop/all-products" element={<AllProducts />} />
-            <Route path="/shop/bestsellers" element={<Bestsellers />} />
-            <Route path="/shop/new-arrivals" element={<NewArrivals />} />
-            <Route path="/shop/gift-sets" element={<GiftSets />} />
-            
-            {/* Company Subpages */}
-            <Route path="/company/our-story" element={<OurStory />} />
-            <Route path="/company/sustainability" element={<Sustainability />} />
-            <Route path="/company/ingredients" element={<Ingredients />} />
-            <Route path="/company/press" element={<Press />} />
-            
-            {/* Support Subpages */}
-            <Route path="/faqs" element={<FAQs />} />
-            <Route path="/shipping-returns" element={<ShippingReturns />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            
-            {/* Catch-all route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <CartProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              
+              {/* Main Pages */}
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/journal" element={<Journal />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/auth" element={<AuthPage />} />
+              
+              {/* Shop Subpages */}
+              <Route path="/shop/all-products" element={<AllProducts />} />
+              <Route path="/shop/bestsellers" element={<Bestsellers />} />
+              <Route path="/shop/new-arrivals" element={<NewArrivals />} />
+              <Route path="/shop/gift-sets" element={<GiftSets />} />
+              
+              {/* Company Subpages */}
+              <Route path="/company/our-story" element={<OurStory />} />
+              <Route path="/company/sustainability" element={<Sustainability />} />
+              <Route path="/company/ingredients" element={<Ingredients />} />
+              <Route path="/company/press" element={<Press />} />
+              
+              {/* Support Subpages */}
+              <Route path="/faqs" element={<FAQs />} />
+              <Route path="/shipping-returns" element={<ShippingReturns />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              
+              {/* Catch-all route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>

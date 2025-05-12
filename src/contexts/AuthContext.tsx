@@ -1,13 +1,16 @@
-
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { toast } from "@/components/ui/sonner";
+import { supabase } from "@/integrations/supabase/client";
+import type { User as SupabaseUser, Session } from "@supabase/supabase-js";
 
-// Define user type
+// Define user type (can potentially be enhanced with Supabase data)
 export interface User {
   id: string;
-  name?: string;
-  email?: string;
-  photoURL?: string;
+  name?: string | null;
+  email?: string | null;
+  photoURL?: string | null;
+  app_metadata?: Record<string, any>;
+  user_metadata?: Record<string, any>;
 }
 
 interface AuthContextType {
@@ -24,56 +27,85 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // Check if user is stored in localStorage on component mount
-    const storedUser = localStorage.getItem('dufie_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      toast.success("Welcome back!", {
-        description: "You've been automatically signed in.",
-      });
-    }
-    setLoading(false);
+    setLoading(true);
+    // Check initial session state
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        const supabaseUser = session.user;
+        setUser({
+          id: supabaseUser.id,
+          email: supabaseUser.email,
+          name: supabaseUser.user_metadata?.full_name || supabaseUser.user_metadata?.name || supabaseUser.email,
+          photoURL: supabaseUser.user_metadata?.avatar_url || supabaseUser.user_metadata?.picture,
+          app_metadata: supabaseUser.app_metadata,
+          user_metadata: supabaseUser.user_metadata,
+        });
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    // Listen for auth state changes
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        setLoading(true);
+        if (session) {
+          const supabaseUser = session.user;
+          const newUser: User = {
+            id: supabaseUser.id,
+            email: supabaseUser.email,
+            name: supabaseUser.user_metadata?.full_name || supabaseUser.user_metadata?.name || supabaseUser.email,
+            photoURL: supabaseUser.user_metadata?.avatar_url || supabaseUser.user_metadata?.picture,
+            app_metadata: supabaseUser.app_metadata,
+            user_metadata: supabaseUser.user_metadata,
+          };
+          setUser(newUser);
+        } else {
+          setUser(null);
+        }
+        setLoading(false);
+      }
+    );
+
+    // Cleanup listener on component unmount
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
   }, []);
 
-  // Mock sign-in with Google
+  // Sign-in with Google using Supabase OAuth
   const signInWithGoogle = async () => {
     setLoading(true);
     try {
-      // Simulate a Google auth response
-      const mockUser: User = {
-        id: 'user_' + Math.random().toString(36).substr(2, 9),
-        name: 'Demo User',
-        email: 'user@example.com',
-        photoURL: 'https://api.dicebear.com/7.x/avataaars/svg?seed=user',
-      };
-      
-      setUser(mockUser);
-      localStorage.setItem('dufie_user', JSON.stringify(mockUser));
-      toast.success("Sign in successful!", {
-        description: "Welcome to Dufie's Skincare.",
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin
+        }
       });
-    } catch (error) {
+      if (error) throw error;
+    } catch (error: any) {
       console.error('Error signing in with Google:', error);
       toast.error("Sign in failed", {
-        description: "Something went wrong. Please try again.",
+        description: error.message || "Something went wrong. Please try again.",
       });
-    } finally {
-      setLoading(false);
     }
   };
 
+  // Sign out using Supabase
   const signOut = async () => {
     setLoading(true);
     try {
-      setUser(null);
-      localStorage.removeItem('dufie_user');
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
       toast.success("Signed out successfully!", {
         description: "You have been signed out of your account.",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error signing out:', error);
       toast.error("Sign out failed", {
-        description: "Something went wrong. Please try again.",
+        description: error.message || "Something went wrong. Please try again.",
       });
     } finally {
       setLoading(false);

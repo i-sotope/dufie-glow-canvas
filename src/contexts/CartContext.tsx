@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -6,18 +5,20 @@ import { toast } from "@/components/ui/sonner";
 
 export interface CartItem {
   id: string;
-  product_id: string;
+  product_id: string | null;
+  gift_set_id: string | null;
   name: string;
   price: number;
   quantity: number;
-  image_url: string;
+  image_url: string | null;
+  type: 'product' | 'gift_set';
 }
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (product: any) => Promise<void>;
-  removeFromCart: (productId: string) => Promise<void>;
-  updateQuantity: (productId: string, quantity: number) => Promise<void>;
+  addToCart: (itemToAdd: { product_id?: string | null; gift_set_id?: string | null; quantity: number; name?: string; price?: number; image?: string }) => Promise<void>;
+  removeFromCart: (cartItemId: string) => Promise<void>;
+  updateQuantity: (cartItemId: string, quantity: number) => Promise<void>;
   clearCart: () => Promise<void>;
   isLoading: boolean;
   cartTotal: number;
@@ -52,11 +53,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         .from('cart_items')
         .select(`
           id,
-          product_id,
           quantity,
+          product_id,
+          gift_set_id,
           products (
             name,
             price,
+            image_url
+          ),
+          gift_sets (
+            name,
+            set_price,
             image_url
           )
         `)
@@ -67,14 +74,34 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }
 
       if (data) {
-        const formattedItems = data.map(item => ({
-          id: item.id,
-          product_id: item.product_id,
-          name: item.products.name,
-          price: item.products.price,
-          quantity: item.quantity,
-          image_url: item.products.image_url
-        }));
+        const formattedItems = data.map(item => {
+          if (item.products) {
+            return {
+              id: item.id,
+              product_id: item.product_id,
+              gift_set_id: null,
+              name: item.products.name,
+              price: item.products.price,
+              quantity: item.quantity,
+              image_url: item.products.image_url,
+              type: 'product' as const
+            };
+          } else if (item.gift_sets) {
+            return {
+              id: item.id,
+              product_id: null,
+              gift_set_id: item.gift_set_id,
+              name: item.gift_sets.name,
+              price: item.gift_sets.set_price ?? 0,
+              quantity: item.quantity,
+              image_url: item.gift_sets.image_url,
+              type: 'gift_set' as const
+            };
+          } else {
+            console.warn("Cart item without product or gift set found:", item.id);
+            return null;
+          }
+        }).filter((item): item is CartItem => item !== null);
         
         setCartItems(formattedItems);
       }
@@ -86,7 +113,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const addToCart = async (product: any) => {
+  const addToCart = async (itemToAdd: { product_id?: string | null; gift_set_id?: string | null; quantity: number; name?: string; price?: number; image?: string }) => {
     if (!user) {
       toast.error("Please sign in to add items to your cart");
       return;
@@ -94,39 +121,57 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     setIsLoading(true);
     try {
-      // Check if item already exists in cart
-      const { data: existingItem } = await supabase
+      const isGiftSet = itemToAdd.gift_set_id != null;
+      const idToCheck = isGiftSet ? itemToAdd.gift_set_id : itemToAdd.product_id;
+      const columnToCheck = isGiftSet ? 'gift_set_id' : 'product_id';
+
+      if (!idToCheck) {
+        toast.error("Item ID missing, cannot add to cart.");
+        setIsLoading(false);
+        return;
+      }
+
+      const { data: existingItem, error: fetchError } = await supabase
         .from('cart_items')
-        .select()
+        .select('id, quantity')
         .eq('user_id', user.id)
-        .eq('product_id', product.id)
-        .single();
+        .eq(columnToCheck, idToCheck)
+        .maybeSingle();
+
+      if (fetchError) throw fetchError;
 
       if (existingItem) {
-        // If exists, update quantity
-        const { error } = await supabase
+        const { error: updateError } = await supabase
           .from('cart_items')
           .update({ 
-            quantity: existingItem.quantity + 1,
+            quantity: existingItem.quantity + itemToAdd.quantity,
             updated_at: new Date().toISOString()
           })
           .eq('id', existingItem.id);
 
-        if (error) throw error;
+        if (updateError) throw updateError;
       } else {
-        // If new, insert item
-        const { error } = await supabase
+        const insertPayload: any = {
+          user_id: user.id,
+          quantity: itemToAdd.quantity
+        };
+        if (isGiftSet) {
+          insertPayload.gift_set_id = idToCheck;
+          insertPayload.product_id = null;
+        } else {
+          insertPayload.product_id = idToCheck;
+          insertPayload.gift_set_id = null;
+        }
+        
+        const { error: insertError } = await supabase
           .from('cart_items')
-          .insert({
-            user_id: user.id,
-            product_id: product.id,
-            quantity: 1
-          });
+          .insert(insertPayload);
 
-        if (error) throw error;
+        if (insertError) throw insertError;
       }
       
-      toast.success(`${product.name} added to cart`);
+      const itemName = itemToAdd.name ?? 'Item';
+      toast.success(`${itemName} added to cart`);
       await fetchCartItems();
     } catch (error) {
       console.error("Error adding to cart:", error);
@@ -136,7 +181,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const removeFromCart = async (productId: string) => {
+  const removeFromCart = async (cartItemId: string) => {
     if (!user) return;
     
     setIsLoading(true);
@@ -145,12 +190,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         .from('cart_items')
         .delete()
         .eq('user_id', user.id)
-        .eq('product_id', productId);
+        .eq('id', cartItemId);
 
       if (error) throw error;
       
-      // Update local state
-      setCartItems(cartItems.filter(item => item.product_id !== productId));
+      setCartItems(currentItems => currentItems.filter(item => item.id !== cartItemId));
       toast.success("Item removed from cart");
     } catch (error) {
       console.error("Error removing from cart:", error);
@@ -160,7 +204,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const updateQuantity = async (productId: string, quantity: number) => {
+  const updateQuantity = async (cartItemId: string, quantity: number) => {
     if (!user || quantity < 1) return;
     
     setIsLoading(true);
@@ -172,14 +216,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           updated_at: new Date().toISOString()
         })
         .eq('user_id', user.id)
-        .eq('product_id', productId);
+        .eq('id', cartItemId);
 
       if (error) throw error;
       
-      // Update local state
-      setCartItems(cartItems.map(item => 
-        item.product_id === productId ? { ...item, quantity } : item
-      ));
+      setCartItems(currentItems => 
+        currentItems.map(item => 
+          item.id === cartItemId ? { ...item, quantity } : item
+        )
+      );
     } catch (error) {
       console.error("Error updating quantity:", error);
       toast.error("Failed to update quantity");

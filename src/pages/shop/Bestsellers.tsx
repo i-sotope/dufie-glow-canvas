@@ -1,54 +1,62 @@
-
+import { useState, useEffect } from "react";
 import PageLayout from "@/components/PageLayout";
 import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/components/ui/sonner";
 
-// Sample bestselling product data
-const bestsellerProducts = [
-  {
-    id: 1,
-    name: "Hydrating Facial Serum",
-    description: "Deeply hydrates and replenishes skin with plant-derived nutrients.",
-    price: "$65.00",
-    rating: 5,
-    reviews: 124,
-    image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=986&auto=format&fit=crop&ixlib=rb-4.0.3"
-  },
-  {
-    id: 3,
-    name: "Calming Clay Mask",
-    description: "Purifies and detoxifies while soothing sensitive skin.",
-    price: "$42.00",
-    rating: 4.8,
-    reviews: 98,
-    image: "https://images.unsplash.com/photo-1570194065650-d99fb4ee271b?q=80&w=1020&auto=format&fit=crop&ixlib=rb-4.0.3"
-  },
-  {
-    id: 8,
-    name: "Balancing Facial Toner",
-    description: "Rebalances pH and preps skin for optimal product absorption.",
-    price: "$32.00",
-    rating: 4.5,
-    reviews: 87,
-    image: "https://images.unsplash.com/photo-1563804447127-f4e9ff9e8ce7?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3"
-  },
-  {
-    id: 5,
-    name: "Botanical Cleansing Oil",
-    description: "Gently dissolves makeup and impurities without stripping skin.",
-    price: "$38.00",
-    rating: 4.9,
-    reviews: 76,
-    image: "https://images.unsplash.com/photo-1617897903246-719242758050?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3"
-  }
-];
+// Define Product interface
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  rating: number;
+  image_url: string;
+}
 
 const Bestsellers = () => {
-  const { addToCart, isLoading } = useCart();
-  
+  const { addToCart, isLoading: isCartLoading } = useCart();
+
+  // Add state for products, loading, error
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch bestsellers on mount
+  useEffect(() => {
+    const fetchBestsellers = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        // Query for bestsellers - order by rating desc, limit to 4 (adjust as needed)
+        const { data, error: dbError } = await supabase
+          .from('products')
+          // Select columns - remove 'reviews'
+          .select('id, name, description, price, rating, image_url') 
+          // Add filtering logic if applicable (e.g., .eq('tag', 'Bestseller'))
+          .order('rating', { ascending: false }) 
+          .limit(4);
+
+        if (dbError) {
+          throw dbError;
+        }
+        setProducts(data as Product[] || []);
+      } catch (err: any) {
+        console.error("Error fetching bestsellers:", err);
+        setError("Failed to load bestsellers.");
+        toast.error("Failed to load bestsellers.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBestsellers();
+  }, []);
+
   // Function to render stars based on rating
   const renderStars = (rating: number) => {
     return Array(5).fill(0).map((_, i) => (
@@ -65,12 +73,14 @@ const Bestsellers = () => {
     ));
   };
 
-  const handleAddToCart = (product: any) => {
-    // Convert price string to number
-    const priceNum = parseFloat(product.price.replace('$', ''));
+  const handleAddToCart = (product: Product) => {
     addToCart({
-      ...product,
-      price: priceNum
+      product_id: product.id,
+      gift_set_id: null,
+      quantity: 1,
+      name: product.name,
+      price: product.price,
+      image: product.image_url
     });
   };
 
@@ -82,49 +92,60 @@ const Bestsellers = () => {
       />
       
       <div className="container py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {bestsellerProducts.map((product) => (
-            <Card 
-              key={product.id} 
-              className="product-card border-0 bg-background rounded-xl overflow-hidden shadow-sm"
-            >
-              <div className="aspect-[4/5] overflow-hidden">
-                <img 
-                  src={product.image} 
-                  alt={product.name} 
-                  className="w-full h-full object-cover transition-transform hover:scale-105 duration-700"
-                />
-              </div>
-              <div className="p-6 space-y-3">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center space-x-1">
-                    {renderStars(product.rating)}
+        {/* Loading State */}
+        {isLoading && <p className="text-center">Loading bestsellers...</p>}
+        
+        {/* Error State */}
+        {error && <p className="text-center text-destructive">{error}</p>}
+
+        {/* No Products State */}
+        {!isLoading && !error && products.length === 0 && (
+          <p className="text-center text-muted-foreground">No bestsellers found.</p>
+        )}
+
+        {/* Products Grid */}
+        {!isLoading && !error && products.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {products.map((product) => (
+              <Card 
+                key={product.id} 
+                className="product-card border-0 bg-background rounded-xl overflow-hidden shadow-sm"
+              >
+                <div className="aspect-[4/5] overflow-hidden">
+                  <img 
+                    src={product.image_url}
+                    alt={product.name} 
+                    className="w-full h-full object-cover transition-transform hover:scale-105 duration-700"
+                  />
+                </div>
+                <div className="p-6 space-y-3">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center space-x-1">
+                      {renderStars(product.rating)}
+                    </div>
                   </div>
-                  <span className="text-xs text-muted-foreground">
-                    {product.reviews} reviews
-                  </span>
+                  <h3 className="font-playfair font-semibold text-lg">{product.name}</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
+                  <div className="flex items-center justify-between pt-2">
+                    <span className="font-medium">${product.price.toFixed(2)}</span>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="rounded-full"
+                      onClick={() => handleAddToCart(product)}
+                      disabled={isCartLoading}
+                    >
+                      {isCartLoading ? 'Adding...' : 'Add to Cart'}
+                    </Button>
+                  </div>
                 </div>
-                <h3 className="font-playfair font-semibold text-lg">{product.name}</h3>
-                <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
-                <div className="flex items-center justify-between pt-2">
-                  <span className="font-medium">{product.price}</span>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="rounded-full"
-                    onClick={() => handleAddToCart(product)}
-                    disabled={isLoading}
-                  >
-                    Add to Cart
-                  </Button>
+                <div className="absolute top-3 left-3 bg-accent text-accent-foreground rounded-full px-3 py-1 text-xs font-medium">
+                  Bestseller
                 </div>
-              </div>
-              <div className="absolute top-3 left-3 bg-accent text-accent-foreground rounded-full px-3 py-1 text-xs font-medium">
-                Bestseller
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ))}
+          </div>
+        )}
         
         <div className="mt-16">
           <h2 className="text-2xl font-playfair font-bold mb-6">Why Our Bestsellers Stand Out</h2>

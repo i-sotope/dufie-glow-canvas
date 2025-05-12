@@ -1,51 +1,64 @@
-
+import { useState, useEffect } from "react";
 import PageLayout from "@/components/PageLayout";
 import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Star } from "lucide-react";
+import { Star, ArrowRight } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/components/ui/sonner";
 
-// Sample new arrivals product data
-const newArrivalsProducts = [
-  {
-    id: 6,
-    name: "Vitamin C Brightening Serum",
-    description: "Fades dark spots and evens skin tone with potent antioxidants.",
-    price: "$72.00",
-    rating: 4.6,
-    image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3",
-    launch: "New for Spring 2023"
-  },
-  {
-    id: 4,
-    name: "Nourishing Night Cream",
-    description: "Restores and repairs skin during sleep for morning radiance.",
-    price: "$58.00",
-    rating: 4.7,
-    image: "https://images.unsplash.com/photo-1567721913486-6585f069b332?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3",
-    launch: "Just Launched"
-  },
-  {
-    id: 9,
-    name: "Rose Quartz Facial Roller",
-    description: "Natural stone facial massage tool to reduce puffiness and enhance product absorption.",
-    price: "$28.00",
-    rating: 4.8,
-    image: "https://images.unsplash.com/photo-1562616293-1a11a7816903?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3",
-    launch: "New Addition"
-  },
-  {
-    id: 10,
-    name: "Antioxidant Day Cream SPF30",
-    description: "Protects against environmental damage while providing all-day moisture.",
-    price: "$62.00",
-    rating: 4.9,
-    image: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?q=80&w=1042&auto=format&fit=crop&ixlib=rb-4.0.3",
-    launch: "Just Released"
-  }
-];
+// Define Product interface (assuming similar structure)
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  rating: number; // Assuming rating is available
+  image_url: string;
+  created_at?: string; // Optional: if sorting by creation time
+  // launch?: string; // Remove launch
+}
 
 const NewArrivals = () => {
+  const { addToCart, isLoading: isCartLoading } = useCart();
+  
+  // Add state for products, loading, error
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch products on mount
+  useEffect(() => {
+    const fetchNewArrivals = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        // Query for new arrivals - sort by created_at desc, limit to 4 (adjust as needed)
+        const { data, error: dbError } = await supabase
+          .from('products')
+          // Select relevant columns - ensure 'rating', 'image_url', 'launch' exist
+          .select('id, name, description, price, rating, image_url, created_at') 
+          // Add filtering logic if applicable (e.g., .eq('tag', 'New'))
+          .order('created_at', { ascending: false }) // Or use a specific 'new_arrival' flag/date
+          .limit(4);
+
+        if (dbError) {
+          throw dbError;
+        }
+        setProducts(data as Product[] || []);
+      } catch (err: any) {
+        console.error("Error fetching new arrivals:", err);
+        setError("Failed to load new arrivals.");
+        toast.error("Failed to load new arrivals.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchNewArrivals();
+  }, []);
+
   // Function to render stars based on rating
   const renderStars = (rating: number) => {
     return Array(5).fill(0).map((_, i) => (
@@ -62,6 +75,20 @@ const NewArrivals = () => {
     ));
   };
 
+  // Adjust handleAddToCart for numeric price
+  const handleAddToCart = (product: Product) => {
+    // Pass the correct structure expected by CartContext
+    addToCart({
+      product_id: product.id,
+      gift_set_id: null, // Explicitly null for products
+      quantity: 1,
+       // Pass other details needed by CartContext (name, price, image)
+      name: product.name,
+      price: product.price,
+      image: product.image_url
+    });
+  };
+
   return (
     <PageLayout>
       <PageHeader 
@@ -71,43 +98,66 @@ const NewArrivals = () => {
       
       <section className="py-16">
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {newArrivalsProducts.map((product) => (
-              <Card 
-                key={product.id} 
-                className="product-card border-0 bg-background rounded-xl overflow-hidden shadow-sm"
-              >
-                <div className="aspect-[4/5] overflow-hidden">
-                  <img 
-                    src={product.image} 
-                    alt={product.name} 
-                    className="w-full h-full object-cover transition-transform hover:scale-105 duration-700"
-                  />
-                </div>
-                <div className="p-6 space-y-3">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center space-x-1">
-                      {renderStars(product.rating)}
+          {/* Loading State */}
+          {isLoading && <p className="text-center">Loading new arrivals...</p>}
+          
+          {/* Error State */}
+          {error && <p className="text-center text-destructive">{error}</p>}
+
+          {/* No Products State */}
+          {!isLoading && !error && products.length === 0 && (
+            <p className="text-center text-muted-foreground">No new arrivals found.</p>
+          )}
+
+          {/* Products Grid */}
+          {!isLoading && !error && products.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {products.map((product) => (
+                <Card 
+                  key={product.id} 
+                  className="product-card border-0 bg-background rounded-xl overflow-hidden shadow-sm"
+                >
+                  <div className="aspect-[4/5] overflow-hidden">
+                    <img 
+                      src={product.image_url} // Use image_url
+                      alt={product.name} 
+                      className="w-full h-full object-cover transition-transform hover:scale-105 duration-700"
+                    />
+                  </div>
+                  <div className="p-6 space-y-3">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center space-x-1">
+                        {renderStars(product.rating)} {/* Use fetched rating */}
+                      </div>
+                      {/* Remove launch info rendering */}
+                      {/* {product.launch && (
+                        <span className="text-xs text-accent-foreground font-medium">
+                          {product.launch}
+                        </span>
+                      )} */}
                     </div>
-                    <span className="text-xs text-accent-foreground font-medium">
-                      {product.launch}
-                    </span>
+                    <h3 className="font-playfair font-semibold text-lg">{product.name}</h3>
+                    <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
+                    <div className="flex items-center justify-between pt-2">
+                      <span className="font-medium">${product.price.toFixed(2)}</span> {/* Use fetched price */}
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="rounded-full"
+                        onClick={() => handleAddToCart(product)}
+                        disabled={isCartLoading} // Use isCartLoading
+                      >
+                        {isCartLoading ? 'Adding...' : 'Add to Cart'}
+                      </Button>
+                    </div>
                   </div>
-                  <h3 className="font-playfair font-semibold text-lg">{product.name}</h3>
-                  <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
-                  <div className="flex items-center justify-between pt-2">
-                    <span className="font-medium">{product.price}</span>
-                    <Button variant="outline" size="sm" className="rounded-full">
-                      Add to Cart
-                    </Button>
+                  <div className="absolute top-3 left-3 bg-primary text-primary-foreground rounded-full px-3 py-1 text-xs font-medium">
+                    New
                   </div>
-                </div>
-                <div className="absolute top-3 left-3 bg-primary text-primary-foreground rounded-full px-3 py-1 text-xs font-medium">
-                  New
-                </div>
-              </Card>
-            ))}
-          </div>
+                </Card>
+              ))}
+            </div>
+          )}
           
           <div className="mt-16">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">

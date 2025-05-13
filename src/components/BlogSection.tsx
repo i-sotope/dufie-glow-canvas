@@ -6,27 +6,27 @@ import { ArrowRight } from "lucide-react";
 const blogPosts = [
   {
     id: 1,
-    title: "Understanding Your Skin's Microbiome",
-    excerpt: "Learn how the balance of bacteria on your skin affects your overall complexion and how to nurture it naturally.",
+    title: "Finding the Perfect Gift for Different Personalities",
+    excerpt: "Learn how to match gifts with personality types to create meaningful moments for your loved ones.",
     date: "May 1, 2023",
-    image: "https://images.unsplash.com/photo-1624915787949-47c151907c81?q=80&w=1064&auto=format&fit=crop&ixlib=rb-4.0.3",
-    category: "Skin Science"
+    image: "https://images.unsplash.com/photo-1511988617509-a57c8a288659?q=80&w=1171&auto=format&fit=crop",
+    category: "Gift Guide"
   },
   {
     id: 2,
-    title: "The Benefits of Plant-Based Skincare",
-    excerpt: "Discover why botanicals are not just trendy but truly effective for achieving healthy, glowing skin.",
+    title: "The Art of Thoughtful Gifting",
+    excerpt: "Discover why personalized gifts create deeper connections and leave lasting impressions.",
     date: "April 20, 2023",
-    image: "https://images.unsplash.com/photo-1564202482141-0f6eb5c41c50?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3",
-    category: "Ingredients"
+    image: "https://images.unsplash.com/photo-1607344645866-009cdf0f7393?q=80&w=987&auto=format&fit=crop",
+    category: "Gift Ideas"
   },
   {
     id: 3,
-    title: "Creating a Minimalist Skincare Routine",
-    excerpt: "Simplify your regimen without sacrificing results with our expert-backed minimalist approach to skincare.",
+    title: "Creating Memorable Unboxing Experiences",
+    excerpt: "Simple techniques to elevate your gift presentation and make every unwrapping moment special.",
     date: "April 15, 2023",
-    image: "https://images.unsplash.com/photo-1614806687380-3296a3963a3b?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3",
-    category: "Routines"
+    image: "https://images.unsplash.com/photo-1608286938291-3ce339da4fb4?q=80&w=987&auto=format&fit=crop",
+    category: "Presentation"
   }
 ];
 
@@ -37,10 +37,10 @@ const BlogSection = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
           <div className="reveal">
             <h2 className="text-3xl md:text-4xl font-playfair font-bold mb-4">
-              Skincare Journal
+              Gifting Journal
             </h2>
             <p className="text-muted-foreground max-w-md">
-              Expert advice, skincare tips, and beauty insights from our team of specialists.
+              Expert advice, gift ideas, and inspiration to help you celebrate life's special moments.
             </p>
           </div>
           <Button variant="link" size="sm" className="mt-4 md:mt-0">

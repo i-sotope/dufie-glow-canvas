@@ -10,19 +10,19 @@ const Hero = () => {
           {/* Hero Content */}
           <div className="space-y-6 animate-fade-in">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold leading-tight tracking-tight">
-              Natural Beauty <br />
-              <span className="text-accent-foreground">Amplified</span>
+              Thoughtful Gifts <br />
+              <span className="text-accent-foreground">For Every Occasion</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-md">
-              Discover plant-based skincare rituals that illuminate your natural radiance and inspire confidence.
+              We curate, wrap, and deliver meaningful gifts that celebrate special moments and strengthen your relationships with loved ones.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="rounded-full px-8">
-                Shop Collection
+                Browse Gifts
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button variant="outline" size="lg" className="rounded-full px-8">
-                Our Story
+                How It Works
               </Button>
             </div>
           </div>
@@ -30,8 +30,8 @@ const Hero = () => {
           {/* Hero Image */}
           <div className="relative h-[400px] md:h-[500px] lg:h-[600px] rounded-xl overflow-hidden">
             <img 
-              src="https://images.unsplash.com/photo-1562887085-cb16e9276c85?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3" 
-              alt="Dufie's Skincare products arrangement" 
+              src="https://images.unsplash.com/photo-1575384043001-f37f48835c98?q=80&w=1074&auto=format&fit=crop" 
+              alt="Beautifully wrapped gift boxes with ribbons" 
               className="w-full h-full object-cover rounded-xl"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/20"></div>

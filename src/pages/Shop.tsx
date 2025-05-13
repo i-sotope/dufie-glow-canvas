@@ -4,32 +4,36 @@ import PageLayout from "@/components/PageLayout";
 import PageHeader from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Gift, Package, Present } from "lucide-react";
 
 const categoryLinks = [
   {
-    title: "All Products",
-    description: "Our complete collection of plant-based skincare solutions",
-    image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3",
-    link: "/shop/all-products"
+    title: "All Gifts",
+    description: "Our complete collection of thoughtfully curated gift options",
+    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=987&auto=format&fit=crop",
+    link: "/shop/all-products",
+    icon: <Gift className="h-5 w-5" />
   },
   {
-    title: "Bestsellers",
-    description: "Customer favorites and our most popular formulations",
-    image: "https://images.unsplash.com/photo-1643185539104-3622eb1f0ff6?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3",
-    link: "/shop/bestsellers"
+    title: "Most Popular",
+    description: "Customer favorites and our most beloved gift selections",
+    image: "https://images.unsplash.com/photo-1512909006721-3d6018887383?q=80&w=1170&auto=format&fit=crop",
+    link: "/shop/bestsellers",
+    icon: <Present className="h-5 w-5" />
   },
   {
-    title: "New Arrivals",
-    description: "Our latest innovations and seasonal launches",
-    image: "https://images.unsplash.com/photo-1600428877878-1a0fd85beda2?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3",
-    link: "/shop/new-arrivals"
+    title: "New Collections",
+    description: "Our latest curated gift sets and seasonal offerings",
+    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=987&auto=format&fit=crop",
+    link: "/shop/new-arrivals",
+    icon: <Package className="h-5 w-5" />
   },
   {
     title: "Gift Sets",
-    description: "Curated collections for every skincare routine",
-    image: "https://images.unsplash.com/photo-1584305574647-0cc949a2bb9f?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3",
-    link: "/shop/gift-sets"
+    description: "Curated collections for every occasion and relationship",
+    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=987&auto=format&fit=crop",
+    link: "/shop/gift-sets",
+    icon: <Present className="h-5 w-5" />
   }
 ];
 
@@ -37,8 +41,8 @@ const Shop = () => {
   return (
     <PageLayout>
       <PageHeader 
-        title="Our Collection" 
-        subtitle="Discover plant-powered skincare solutions designed to enhance your natural beauty."
+        title="Our Collections" 
+        subtitle="Discover thoughtfully curated gifts designed to celebrate special moments and strengthen relationships."
       />
       
       <div className="container py-16">
@@ -55,7 +59,10 @@ const Shop = () => {
                     />
                   </div>
                   <div className="p-6 flex flex-col justify-center">
-                    <h2 className="font-playfair text-2xl font-semibold mb-2">{category.title}</h2>
+                    <div className="flex items-center gap-2 mb-2">
+                      {category.icon}
+                      <h2 className="font-playfair text-2xl font-semibold">{category.title}</h2>
+                    </div>
                     <p className="text-muted-foreground mb-4">{category.description}</p>
                     <Button variant="link" className="w-fit p-0">
                       Explore <ArrowRight className="ml-2 h-4 w-4" />

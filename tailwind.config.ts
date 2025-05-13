@@ -61,13 +61,13 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
         },
-        // Custom colors for Dufie's Skincare
+        // Custom colors for Dufie's Gifts
         dufie: {
           'ivory': '#F8F6F2',
           'blush': '#F5E6E8',
-          'sage': '#D1DECA',
+          'burgundy': '#A5243D',
           'charcoal': '#252526',
-          'rosegold': '#D7B29D',
+          'gold': '#D4AF37',
           'purple': '#9D8AA8',
         }
       },

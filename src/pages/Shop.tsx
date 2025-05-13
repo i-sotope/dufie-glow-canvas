@@ -1,10 +1,9 @@
-
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/PageLayout";
 import PageHeader from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Gift, Package, Present } from "lucide-react";
+import { ArrowRight, Gift, Package, Box } from "lucide-react";
 
 const categoryLinks = [
   {
@@ -19,7 +18,7 @@ const categoryLinks = [
     description: "Customer favorites and our most beloved gift selections",
     image: "https://images.unsplash.com/photo-1512909006721-3d6018887383?q=80&w=1170&auto=format&fit=crop",
     link: "/shop/bestsellers",
-    icon: <Present className="h-5 w-5" />
+    icon: <Gift className="h-5 w-5" />
   },
   {
     title: "New Collections",
@@ -33,7 +32,7 @@ const categoryLinks = [
     description: "Curated collections for every occasion and relationship",
     image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=987&auto=format&fit=crop",
     link: "/shop/gift-sets",
-    icon: <Present className="h-5 w-5" />
+    icon: <Box className="h-5 w-5" />
   }
 ];
 

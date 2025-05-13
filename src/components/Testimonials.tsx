@@ -8,23 +8,23 @@ const testimonials = [
     id: 1,
     name: "Emma Thompson",
     role: "Loyal Customer",
-    content: "The Hydrating Facial Serum has transformed my skin completely. After just two weeks, my complexion is noticeably more radiant and even-toned. I've never received so many compliments on my skin!",
+    content: "The personalized gift basket for my sister's birthday was perfect! The attention to detail and quality of items were outstanding. Dufie's truly made her day special.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1064&auto=format&fit=crop&ixlib=rb-4.0.3"
   },
   {
     id: 2,
     name: "Michael Chen",
-    role: "Skincare Enthusiast",
-    content: "As someone with sensitive skin, finding products that don't cause irritation is challenging. Dufie's Calming Clay Mask is gentle yet effective—it soothes redness and leaves my skin feeling refreshed without any tightness.",
+    role: "Gift Enthusiast",
+    content: "Finding unique gifts for my family overseas has always been challenging. Dufie's international shipping and thoughtful curation solved this problem beautifully. The presentation was so elegant!",
     rating: 5,
     image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3"
   },
   {
     id: 3,
     name: "Sophia Rodriguez",
-    role: "Beauty Blogger",
-    content: "I've tried countless night creams, but Dufie's Nourishing Night Cream stands above the rest. The texture is luxurious, it absorbs beautifully, and I wake up to plump, hydrated skin every morning.",
+    role: "Repeat Customer",
+    content: "I've ordered corporate gifts for my entire team from Dufie's, and the response was phenomenal. The customization options and premium quality made our company celebration truly memorable.",
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=1064&auto=format&fit=crop&ixlib=rb-4.0.3"
   }

@@ -12,7 +12,7 @@ const Footer = () => {
           <div className="md:col-span-1">
             <h3 className="font-playfair text-xl font-semibold mb-4">DUFIE'S</h3>
             <p className="text-sm text-muted-foreground mb-6">
-              Elevating your natural beauty with pure, plant-based skincare formulations since 2015.
+              Elevating your gifting experience with thoughtfully curated presents for every occasion since 2015.
             </p>
             <div className="flex space-x-4">
               <Button variant="ghost" size="icon" className="rounded-full bg-muted/50 hover:bg-muted">
@@ -47,7 +47,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><Link to="/company/our-story" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Our Story</Link></li>
               <li><Link to="/company/sustainability" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Sustainability</Link></li>
-              <li><Link to="/company/ingredients" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Ingredients</Link></li>
+              <li><Link to="/company/ingredients" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Our Process</Link></li>
               <li><Link to="/company/press" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Press</Link></li>
             </ul>
           </div>
@@ -66,7 +66,7 @@ const Footer = () => {
         
         <div className="border-t mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Dufie's Skincare. All rights reserved.
+            © {new Date().getFullYear()} Dufie's Gifts. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms</Link>

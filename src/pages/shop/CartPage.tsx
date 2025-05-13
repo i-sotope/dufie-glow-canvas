@@ -31,7 +31,7 @@ const CartPage = () => {
     <PageLayout>
       <PageHeader
         title="Your Shopping Cart"
-        subtitle="Review items in your cart before proceeding to checkout."
+        subtitle="Review your selected gifts before proceeding to checkout."
       />
 
       <section className="py-12">
@@ -39,7 +39,7 @@ const CartPage = () => {
           {cartItems.length === 0 ? (
             <div className="text-center py-16">
               <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
-              <p className="text-muted-foreground mb-6">Looks like you haven't added anything to your cart yet.</p>
+              <p className="text-muted-foreground mb-6">Looks like you haven't added any gifts to your cart yet.</p>
               <Button asChild>
                 <Link to="/shop">Continue Shopping</Link>
               </Button>
@@ -108,6 +108,10 @@ const CartPage = () => {
                       <span>{formatPrice(cartTotal)}</span>
                     </div>
                     <div className="flex justify-between text-muted-foreground">
+                      <span>Gift Wrapping</span>
+                      <span>Options at checkout</span>
+                    </div>
+                    <div className="flex justify-between text-muted-foreground">
                       <span>Shipping</span>
                       <span>Calculated at checkout</span>
                     </div>
@@ -133,4 +137,4 @@ const CartPage = () => {
   );
 };
 
-export default CartPage; 
+export default CartPage;

@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/PageLayout";
 import PageHeader from "@/components/PageHeader";
@@ -50,7 +51,7 @@ const CartPage = () => {
                 {cartItems.map((item) => (
                   <Card key={item.id} className="flex items-center p-4">
                     <img
-                      src={item.image ?? '/placeholder.jpg'}
+                      src={item.image_url ?? '/placeholder.jpg'}
                       alt={item.name}
                       className="w-20 h-20 object-cover rounded-md mr-4"
                     />

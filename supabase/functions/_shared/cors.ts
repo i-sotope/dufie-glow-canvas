@@ -1,3 +1,4 @@
+
 // shared/cors.ts
 export const corsHeaders = {
   'Access-Control-Allow-Origin': '*', // Allow requests from any origin (adjust in production!)

@@ -16,7 +16,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import MapPickerModal from "@/components/MapPickerModal";
 import { supabase } from "@/integrations/supabase/client";
 import { loadStripe } from '@stripe/stripe-js';
-import Stripe from 'stripe'; // Import the Stripe Node library
 
 // Load Stripe outside the component with your publishable key
 // Replace with your actual Publishable Key
@@ -59,80 +58,48 @@ const Cart = () => {
     setCheckoutLoading(true);
 
     if (paymentMethod === 'stripe') {
-      // --- Stripe Checkout (INSECURE LOCAL VERSION) ---
-      if (!STRIPE_SECRET_KEY_LOCAL_TEST_ONLY || STRIPE_SECRET_KEY_LOCAL_TEST_ONLY ===sk_test_51RLQNpQ2jbEjzSWxM2q0xPiHHPynAYAG57TlkjkVIrudBHOce97IOkqZHMA2GzyFYaVBptccIBVgo1VsZK25tjhl003Kyw8Fth) {
-          toast.error("Stripe Secret Key is not set for local testing in Cart.tsx. Please update the STRIPE_SECRET_KEY_LOCAL_TEST_ONLY constant.");
-          setCheckoutLoading(false);
-          return;
-      }
-      
       try {
-        console.log("[Checkout Stripe LOCAL] Initializing Stripe Node client...");
-        // Initialize Stripe Node client directly (INSECURE)
-        const stripeNodeClient = new Stripe(STRIPE_SECRET_KEY_LOCAL_TEST_ONLY, {
-          // apiVersion: '2023-10-16', // Removed to use library default and avoid type error
+        console.log("Calling Stripe checkout edge function...");
+        
+        // Call the Supabase Edge Function to create a Stripe checkout session
+        const { data, error } = await supabase.functions.invoke('create-stripe-checkout', {
+          body: {
+            items: cartItems,
+            userId: user.id,
+            shippingLocation: deliveryLocation,
+            // Could add receiverNumber here too if needed for order fulfillment
+          },
         });
 
-        // --- Determine base URL (needed for success/cancel URLs) ---
-        const siteUrl = window.location.origin; // Use current browser origin for local testing
-        console.log(`[Checkout Stripe LOCAL] Using site URL: ${siteUrl}`);
-
-        // Format line items
-        const line_items = cartItems.map((item) => {
-          const unitAmount = Math.round(item.price * 100);
-          return {
-            price_data: {
-              currency: "usd",
-              product_data: { name: item.name },
-              unit_amount: unitAmount,
-            },
-            quantity: item.quantity,
-          };
-        });
-        console.log("[Checkout Stripe LOCAL] Formatted line_items:", line_items);
-
-        // Metadata (still useful if you implement webhook later)
-         const metadata = {
-            user_id: user.id,
-            shipping_location: deliveryLocation,
-            items_json: JSON.stringify(cartItems.map(item => ({
-               product_id: item.id,
-               name: item.name,
-               quantity: item.quantity,
-               price_at_purchase: item.price,
-               image_url: item.image_url
-            })))
-          };
-        console.log("[Checkout Stripe LOCAL] Prepared metadata:", metadata);
-
-        // Create Stripe Checkout Session directly from frontend (INSECURE)
-        console.log("[Checkout Stripe LOCAL] Creating Stripe session...");
-        const session = await stripeNodeClient.checkout.sessions.create({
-            line_items: line_items,
-            mode: 'payment',
-            success_url: `${siteUrl}/order-success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${siteUrl}/cart`,
-            metadata: metadata,
-        });
-        console.log("[Checkout Stripe LOCAL] Session created:", session.id);
-
-        // Redirect using Stripe.js
-        const stripeJsClient = await stripeJsPromise;
-        if (!stripeJsClient) {
-          throw new Error('Stripe.js failed to load.');
+        if (error) {
+          console.error("Edge function error:", error);
+          throw new Error(error.message || "Failed to create checkout session");
         }
 
-        console.log("[Checkout Stripe LOCAL] Redirecting to Stripe...");
-        const { error: stripeError } = await stripeJsClient.redirectToCheckout({ sessionId: session.id });
-
-        if (stripeError) {
-          console.error("[Checkout Stripe LOCAL] Stripe redirection error:", stripeError);
-          throw new Error(`Failed to redirect to Stripe: ${stripeError.message}`);
+        if (!data?.sessionId) {
+          throw new Error("No session ID returned from checkout function");
         }
 
-      } catch (error: any) {
-        console.error("[Checkout Stripe LOCAL] Failed:", error);
-        toast.error(`Checkout failed: ${error.message || 'Please try again.'}`);
+        console.log("Stripe session created:", data.sessionId);
+        
+        // Redirect to Stripe Checkout
+        const stripe = await stripePromise;
+        if (!stripe) {
+          throw new Error("Failed to load Stripe");
+        }
+
+        const { error: redirectError } = await stripe.redirectToCheckout({
+          sessionId: data.sessionId
+        });
+
+        if (redirectError) {
+          console.error("Stripe redirect error:", redirectError);
+          throw redirectError;
+        }
+
+      } catch (error) {
+        console.error("Checkout error:", error);
+        toast.error(error.message || "Checkout failed. Please try again.");
         setCheckoutLoading(false);
       }
 
@@ -150,9 +117,8 @@ const Cart = () => {
         })),
         total_price: cartTotal, 
         shipping_location: deliveryLocation, 
-        // receiver_number: receiverNumber, // Add to schema if needed
-        status: 'Pending - COD', // Specific status for COD
-        payment_method: 'cod' // Add to schema if needed
+        status: 'Pending - COD', 
+        payment_method: 'cod'
       };
   
       try {
@@ -172,15 +138,14 @@ const Cart = () => {
         setDeliveryLocation("");
         setReceiverNumber("");
   
-      } catch (error: any) {
+      } catch (error) { 
         console.error("[Checkout COD] Failed:", error); 
         toast.error(`Order placement failed: ${error.message || 'Please try again.'}`);
       } finally {
-         console.log("[Checkout COD] Finally block");
-        setCheckoutLoading(false); // Stop loading for COD only
+        console.log("[Checkout COD] Finally block");
+        setCheckoutLoading(false);
       }
     } else {
-      // Handle other potential payment methods if any
       toast.error("Invalid payment method selected.");
       setCheckoutLoading(false);
     }

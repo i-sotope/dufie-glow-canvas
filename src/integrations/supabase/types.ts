@@ -12,29 +12,39 @@ export type Database = {
       cart_items: {
         Row: {
           created_at: string | null
+          gift_set_id: string | null
           id: string
-          product_id: string
+          product_id: string | null
           quantity: number
           updated_at: string | null
           user_id: string | null
         }
         Insert: {
           created_at?: string | null
+          gift_set_id?: string | null
           id?: string
-          product_id: string
+          product_id?: string | null
           quantity?: number
           updated_at?: string | null
           user_id?: string | null
         }
         Update: {
           created_at?: string | null
+          gift_set_id?: string | null
           id?: string
-          product_id?: string
+          product_id?: string | null
           quantity?: number
           updated_at?: string | null
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "cart_items_gift_set_id_fkey"
+            columns: ["gift_set_id"]
+            isOneToOne: false
+            referencedRelation: "gift_sets"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "cart_items_product_id_fkey"
             columns: ["product_id"]
@@ -44,9 +54,79 @@ export type Database = {
           },
         ]
       }
+      gift_sets: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          included_product_ids: string[] | null
+          name: string
+          original_price: number | null
+          rating: number | null
+          set_price: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          included_product_ids?: string[] | null
+          name: string
+          original_price?: number | null
+          rating?: number | null
+          set_price?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          included_product_ids?: string[] | null
+          name?: string
+          original_price?: number | null
+          rating?: number | null
+          set_price?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          id: string
+          items: Json
+          order_date: string
+          shipping_location: string
+          status: string
+          total_price: number
+          user_id: string | null
+        }
+        Insert: {
+          id?: string
+          items: Json
+          order_date?: string
+          shipping_location: string
+          status?: string
+          total_price: number
+          user_id?: string | null
+        }
+        Update: {
+          id?: string
+          items?: Json
+          order_date?: string
+          shipping_location?: string
+          status?: string
+          total_price?: number
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           category: string
+          contents: string[] | null
           created_at: string | null
           description: string
           id: string
@@ -60,6 +140,7 @@ export type Database = {
         }
         Insert: {
           category: string
+          contents?: string[] | null
           created_at?: string | null
           description: string
           id?: string
@@ -73,6 +154,7 @@ export type Database = {
         }
         Update: {
           category?: string
+          contents?: string[] | null
           created_at?: string | null
           description?: string
           id?: string

@@ -30,7 +30,7 @@ const Hero = () => {
           {/* Hero Image */}
           <div className="relative h-[400px] md:h-[500px] lg:h-[600px] rounded-xl overflow-hidden">
             <img 
-              src="https://images.unsplash.com/photo-1575384043001-f37f48835c98?q=80&w=1074&auto=format&fit=crop" 
+              src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Fvector-art%2F26309711-vector-of-a-beautifully-wrapped-gift-box-with-a-vibrant-purple-ribbon-and-a-delicate-pink-bow&psig=AOvVaw3XdgNvyuOuszjXDzzTu7M9&ust=1747264099567000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCLCNlJbIoY0DFQAAAAAdAAAAABAE" 
               alt="Beautifully wrapped gift boxes with ribbons" 
               className="w-full h-full object-cover rounded-xl"
             />

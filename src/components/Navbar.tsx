@@ -14,7 +14,6 @@ const Navbar = () => {
   const { cartItems } = useCart();
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
@@ -25,16 +24,26 @@ const Navbar = () => {
           DUFIE'S
         </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="text-sm font-medium hover:text-primary/80 transition-colors">Home</Link>
-          <Link to="/shop" className="text-sm font-medium hover:text-primary/80 transition-colors">Shop</Link>
-          <Link to="/about" className="text-sm font-medium hover:text-primary/80 transition-colors">About</Link>
-          <Link to="/journal" className="text-sm font-medium hover:text-primary/80 transition-colors">Journal</Link>
-          <Link to="/contact" className="text-sm font-medium hover:text-primary/80 transition-colors">Contact</Link>
+          <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
+            Home
+          </Link>
+          <Link to="/shop" className="text-sm font-medium hover:text-primary transition-colors">
+            Shop
+          </Link>
+          <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors">
+            About
+          </Link>
+          <Link to="/journal" className="text-sm font-medium hover:text-primary transition-colors">
+            Journal
+          </Link>
+          <Link to="/contact" className="text-sm font-medium hover:text-primary transition-colors">
+            Contact
+          </Link>
         </nav>
 
-        {/* Actions */}
+        {/* Action Buttons */}
         <div className="flex items-center space-x-4">
           <ThemeToggle />
 
@@ -58,8 +67,8 @@ const Navbar = () => {
             </Button>
           </Link>
 
-          {/* Hamburger */}
-          <Button 
+          {/* Hamburger Menu */}
+          <Button
             variant="ghost"
             size="icon"
             className="md:hidden rounded-full"
@@ -74,15 +83,25 @@ const Navbar = () => {
       {/* Mobile Nav */}
       <div
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          isMenuOpen ? 'max-h-[500px] py-4 border-t' : 'max-h-0'
+          isMenuOpen ? "max-h-[500px] py-4 border-t" : "max-h-0"
         }`}
       >
-        <div className="container flex flex-col space-y-4">
-          <Link to="/" onClick={closeMenu} className="text-base font-medium text-foreground">Home</Link>
-          <Link to="/shop" onClick={closeMenu} className="text-base font-medium text-foreground">Shop</Link>
-          <Link to="/about" onClick={closeMenu} className="text-base font-medium text-foreground">About</Link>
-          <Link to="/journal" onClick={closeMenu} className="text-base font-medium text-foreground">Journal</Link>
-          <Link to="/contact" onClick={closeMenu} className="text-base font-medium text-foreground">Contact</Link>
+        <div className="container flex flex-col items-end space-y-4 text-right">
+          <Link to="/" onClick={closeMenu} className="text-base font-medium text-foreground">
+            Home
+          </Link>
+          <Link to="/shop" onClick={closeMenu} className="text-base font-medium text-foreground">
+            Shop
+          </Link>
+          <Link to="/about" onClick={closeMenu} className="text-base font-medium text-foreground">
+            About
+          </Link>
+          <Link to="/journal" onClick={closeMenu} className="text-base font-medium text-foreground">
+            Journal
+          </Link>
+          <Link to="/contact" onClick={closeMenu} className="text-base font-medium text-foreground">
+            Contact
+          </Link>
           {!user && (
             <div>
               <SignInButton onClick={closeMenu} />

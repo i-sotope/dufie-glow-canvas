@@ -96,50 +96,63 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 pt-16 bg-background dark:bg-gray-900">
-          <nav className="container flex flex-col space-y-6 py-8">
-            <Link 
-              to="/" 
-              className="text-lg font-medium border-b border-border pb-4"
-              onClick={closeMenu}
-            >
-              Home
-            </Link>
-            <Link 
-              to="/shop" 
-              className="text-lg font-medium border-b border-border pb-4"
-              onClick={closeMenu}
-            >
-              Shop
-            </Link>
-            <Link 
-              to="/about" 
-              className="text-lg font-medium border-b border-border pb-4"
-              onClick={closeMenu}
-            >
-              About
-            </Link>
-            <Link 
-              to="/journal" 
-              className="text-lg font-medium border-b border-border pb-4"
-              onClick={closeMenu}
-            >
-              Journal
-            </Link>
-            <Link 
-              to="/contact" 
-              className="text-lg font-medium border-b border-border pb-4"
-              onClick={closeMenu}
-            >
-              Contact
-            </Link>
-            
-            {!user && (
-              <div className="pt-4">
-                <SignInButton onClick={closeMenu} />
-              </div>
-            )}
-          </nav>
+        <div className="fixed inset-0 z-50 bg-white dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 md:hidden">
+          {/* Close button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={closeMenu}
+            className="absolute top-4 right-4 rounded-full"
+          >
+            <X className="h-6 w-6" />
+            <span className="sr-only">Close menu</span>
+          </Button>
+
+          <div className="container pt-16">
+            <nav className="flex flex-col space-y-6 py-8">
+              <Link 
+                to="/" 
+                className="text-lg font-medium border-b border-border pb-4 text-foreground"
+                onClick={closeMenu}
+              >
+                Home
+              </Link>
+              <Link 
+                to="/shop" 
+                className="text-lg font-medium border-b border-border pb-4 text-foreground"
+                onClick={closeMenu}
+              >
+                Shop
+              </Link>
+              <Link 
+                to="/about" 
+                className="text-lg font-medium border-b border-border pb-4 text-foreground"
+                onClick={closeMenu}
+              >
+                About
+              </Link>
+              <Link 
+                to="/journal" 
+                className="text-lg font-medium border-b border-border pb-4 text-foreground"
+                onClick={closeMenu}
+              >
+                Journal
+              </Link>
+              <Link 
+                to="/contact" 
+                className="text-lg font-medium border-b border-border pb-4 text-foreground"
+                onClick={closeMenu}
+              >
+                Contact
+              </Link>
+              
+              {!user && (
+                <div className="pt-4">
+                  <SignInButton onClick={closeMenu} />
+                </div>
+              )}
+            </nav>
+          </div>
         </div>
       )}
     </header>

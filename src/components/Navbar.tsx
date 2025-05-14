@@ -15,21 +15,17 @@ const Navbar = () => {
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b">
+    <header className="sticky top-0 z-50 bg-background border-b shadow-sm">
       <div className="container flex items-center justify-between py-4">
         {/* Logo */}
-        <div className="flex-shrink-0">
-          <Link to="/" className="font-playfair text-2xl font-semibold tracking-tight">
-            DUFIE'S
-          </Link>
-        </div>
+        <Link to="/" className="font-playfair text-2xl font-semibold tracking-tight">
+          DUFIE'S
+        </Link>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-8">
           <Link to="/" className="text-sm font-medium hover:text-primary/80 transition-colors">Home</Link>
           <Link to="/shop" className="text-sm font-medium hover:text-primary/80 transition-colors">Shop</Link>
@@ -38,10 +34,10 @@ const Navbar = () => {
           <Link to="/contact" className="text-sm font-medium hover:text-primary/80 transition-colors">Contact</Link>
         </nav>
 
-        {/* Action Buttons */}
+        {/* Actions */}
         <div className="flex items-center space-x-4">
           <ThemeToggle />
-          
+
           {user ? (
             <UserDropdown />
           ) : (
@@ -49,7 +45,7 @@ const Navbar = () => {
               <SignInButton variant="ghost" />
             </div>
           )}
-          
+
           <Link to="/cart">
             <Button variant="ghost" size="icon" className="rounded-full relative">
               <ShoppingCart className="h-5 w-5" />
@@ -62,10 +58,10 @@ const Navbar = () => {
             </Button>
           </Link>
 
-          {/* Mobile Menu Button */}
+          {/* Hamburger */}
           <Button 
-            variant="ghost" 
-            size="icon" 
+            variant="ghost"
+            size="icon"
             className="md:hidden rounded-full"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
@@ -75,67 +71,25 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-white dark:bg-gray-900 shadow-lg md:hidden">
-          {/* Close button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={closeMenu}
-            className="absolute top-4 right-4 rounded-full"
-          >
-            <X className="h-6 w-6" />
-            <span className="sr-only">Close menu</span>
-          </Button>
-
-          <div className="container pt-16">
-            <nav className="flex flex-col space-y-6 py-8">
-              <Link 
-                to="/" 
-                className="text-lg font-medium border-b border-border pb-4 text-foreground"
-                onClick={closeMenu}
-              >
-                Home
-              </Link>
-              <Link 
-                to="/shop" 
-                className="text-lg font-medium border-b border-border pb-4 text-foreground"
-                onClick={closeMenu}
-              >
-                Shop
-              </Link>
-              <Link 
-                to="/about" 
-                className="text-lg font-medium border-b border-border pb-4 text-foreground"
-                onClick={closeMenu}
-              >
-                About
-              </Link>
-              <Link 
-                to="/journal" 
-                className="text-lg font-medium border-b border-border pb-4 text-foreground"
-                onClick={closeMenu}
-              >
-                Journal
-              </Link>
-              <Link 
-                to="/contact" 
-                className="text-lg font-medium border-b border-border pb-4 text-foreground"
-                onClick={closeMenu}
-              >
-                Contact
-              </Link>
-              
-              {!user && (
-                <div className="pt-4">
-                  <SignInButton onClick={closeMenu} />
-                </div>
-              )}
-            </nav>
-          </div>
+      {/* Mobile Nav */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          isMenuOpen ? 'max-h-[500px] py-4 border-t' : 'max-h-0'
+        }`}
+      >
+        <div className="container flex flex-col space-y-4">
+          <Link to="/" onClick={closeMenu} className="text-base font-medium text-foreground">Home</Link>
+          <Link to="/shop" onClick={closeMenu} className="text-base font-medium text-foreground">Shop</Link>
+          <Link to="/about" onClick={closeMenu} className="text-base font-medium text-foreground">About</Link>
+          <Link to="/journal" onClick={closeMenu} className="text-base font-medium text-foreground">Journal</Link>
+          <Link to="/contact" onClick={closeMenu} className="text-base font-medium text-foreground">Contact</Link>
+          {!user && (
+            <div>
+              <SignInButton onClick={closeMenu} />
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </header>
   );
 };

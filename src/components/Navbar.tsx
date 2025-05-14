@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
@@ -22,6 +23,10 @@ const Navbar = () => {
   const { cartItems } = useCart();
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b">
@@ -91,47 +96,47 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-background pt-16">
+        <div className="md:hidden fixed inset-0 z-50 bg-background pt-16 dark:bg-gray-800/95 bg-white/95">
           <nav className="container flex flex-col space-y-6 py-8">
             <Link 
               to="/" 
               className="text-lg font-medium border-b border-border pb-4"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={closeMenu}
             >
               Home
             </Link>
             <Link 
               to="/shop" 
               className="text-lg font-medium border-b border-border pb-4"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={closeMenu}
             >
               Shop
             </Link>
             <Link 
               to="/about" 
               className="text-lg font-medium border-b border-border pb-4"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={closeMenu}
             >
               About
             </Link>
             <Link 
               to="/journal" 
               className="text-lg font-medium border-b border-border pb-4"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={closeMenu}
             >
               Journal
             </Link>
             <Link 
               to="/contact" 
               className="text-lg font-medium border-b border-border pb-4"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={closeMenu}
             >
               Contact
             </Link>
             
             {!user && (
               <div className="pt-4">
-                <SignInButton />
+                <SignInButton onClick={closeMenu} />
               </div>
             )}
           </nav>

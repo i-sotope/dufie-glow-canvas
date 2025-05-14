@@ -10,58 +10,58 @@ import { ArrowRight } from "lucide-react";
 const blogPosts = [
   {
     id: 1,
-    title: "Understanding Your Skin's Microbiome",
-    excerpt: "Learn how the balance of bacteria on your skin affects your overall complexion and how to nurture it naturally.",
+    title: "The Art of Meaningful Gift-Giving",
+    excerpt: "Explore how thoughtful presents can strengthen relationships and create lasting memories between giver and receiver.",
     date: "May 1, 2023",
-    image: "https://images.unsplash.com/photo-1624915787949-47c151907c81?q=80&w=1064&auto=format&fit=crop&ixlib=rb-4.0.3",
-    category: "Skin Science",
+    image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?q=80&w=1170&auto=format&fit=crop",
+    category: "Gift Ideas",
     featured: true
   },
   {
     id: 2,
-    title: "The Benefits of Plant-Based Skincare",
-    excerpt: "Discover why botanicals are not just trendy but truly effective for achieving healthy, glowing skin.",
+    title: "Celebration Gifts for Every Milestone",
+    excerpt: "Discover perfect gift ideas to commemorate life's important moments, from graduations to anniversaries.",
     date: "April 20, 2023",
-    image: "https://images.unsplash.com/photo-1564202482141-0f6eb5c41c50?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3",
-    category: "Ingredients",
+    image: "https://images.unsplash.com/photo-1512909006721-3d6018887383?q=80&w=1170&auto=format&fit=crop",
+    category: "Occasions",
     featured: true
   },
   {
     id: 3,
-    title: "Creating a Minimalist Skincare Routine",
-    excerpt: "Simplify your regimen without sacrificing results with our expert-backed minimalist approach to skincare.",
+    title: "Creating the Perfect Gift Basket",
+    excerpt: "Learn how to curate themed gift baskets that tell a story and create a complete experience for your recipient.",
     date: "April 15, 2023",
-    image: "https://images.unsplash.com/photo-1614806687380-3296a3963a3b?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3",
-    category: "Routines",
+    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=987&auto=format&fit=crop",
+    category: "DIY",
     featured: true
   },
   {
     id: 4,
-    title: "Seasonal Skincare: Adapting Your Routine",
-    excerpt: "How to adjust your skincare regimen as the seasons change to keep your skin balanced and glowing year-round.",
+    title: "Seasonal Gifting: Holiday Edition",
+    excerpt: "Our guide to navigating holiday gifting with thoughtfulness and intention, avoiding last-minute stress.",
     date: "March 28, 2023",
-    image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3",
-    category: "Routines"
+    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=987&auto=format&fit=crop",
+    category: "Holidays"
   },
   {
     id: 5,
-    title: "The Power of Botanical Extracts",
-    excerpt: "A deep dive into how plant extracts can address specific skin concerns from hyperpigmentation to sensitivity.",
+    title: "The Psychology Behind Gift-Giving",
+    excerpt: "Understanding the emotional impact of presents and how they communicate care in relationships.",
     date: "March 15, 2023",
-    image: "https://images.unsplash.com/photo-1597400474413-35fb75a53290?q=80&w=1067&auto=format&fit=crop&ixlib=rb-4.0.3",
-    category: "Ingredients"
+    image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?q=80&w=1170&auto=format&fit=crop",
+    category: "Insights"
   },
   {
     id: 6,
-    title: "Mindful Beauty: The Connection Between Stress and Skin",
-    excerpt: "Exploring how your mental state affects your skin and practices to promote both inner and outer radiance.",
+    title: "Corporate Gifting: Building Business Relationships",
+    excerpt: "How thoughtful corporate gifts can strengthen professional connections and express appreciation.",
     date: "March 5, 2023",
-    image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3",
-    category: "Wellness"
+    image: "https://images.unsplash.com/photo-1512909006721-3d6018887383?q=80&w=1170&auto=format&fit=crop",
+    category: "Business"
   }
 ];
 
-const categories = ["All", "Skin Science", "Ingredients", "Routines", "Wellness"];
+const categories = ["All", "Gift Ideas", "Occasions", "DIY", "Holidays", "Insights", "Business"];
 
 const Journal = () => {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -73,8 +73,8 @@ const Journal = () => {
   return (
     <PageLayout>
       <PageHeader 
-        title="Skincare Journal" 
-        subtitle="Expert advice, skincare tips, and beauty insights from our team of specialists."
+        title="Gift Journal" 
+        subtitle="Insights, ideas, and inspiration for thoughtful gift-giving and celebration."
       />
       
       <div className="container py-16">

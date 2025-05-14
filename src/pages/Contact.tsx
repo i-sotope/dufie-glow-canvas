@@ -51,7 +51,7 @@ const Contact = () => {
     <PageLayout>
       <PageHeader 
         title="Contact Us" 
-        subtitle="Have questions or feedback? We're here to help."
+        subtitle="Questions about our gifts or need help selecting the perfect present? We're here to help."
       />
 
       <section className="py-16">
@@ -65,9 +65,9 @@ const Contact = () => {
                     <MapPin className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-playfair font-semibold text-lg mb-1">Visit Us</h3>
+                    <h3 className="font-playfair font-semibold text-lg mb-1">Visit Our Gift Gallery</h3>
                     <address className="text-muted-foreground not-italic">
-                      123 Botanical Lane<br />
+                      123 Gifting Lane<br />
                       Accra, Ghana<br />
                       West Africa
                     </address>
@@ -83,10 +83,10 @@ const Contact = () => {
                   <div>
                     <h3 className="font-playfair font-semibold text-lg mb-1">Email Us</h3>
                     <p className="text-muted-foreground">
-                      <a href="mailto:hello@dufies.com">hello@dufies.com</a>
+                      <a href="mailto:hello@dufies.com">gifting@dufies.com</a>
                     </p>
                     <p className="text-muted-foreground">
-                      <a href="mailto:support@dufies.com">support@dufies.com</a>
+                      <a href="mailto:support@dufies.com">corporate@dufies.com</a>
                     </p>
                   </div>
                 </div>
@@ -98,7 +98,7 @@ const Contact = () => {
                     <Phone className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-playfair font-semibold text-lg mb-1">Call Us</h3>
+                    <h3 className="font-playfair font-semibold text-lg mb-1">Call Our Gift Consultants</h3>
                     <p className="text-muted-foreground">
                       <a href="tel:+233123456789">+233 12 345 6789</a>
                     </p>
@@ -112,7 +112,7 @@ const Contact = () => {
                     <Clock className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-playfair font-semibold text-lg mb-1">Hours</h3>
+                    <h3 className="font-playfair font-semibold text-lg mb-1">Gift Gallery Hours</h3>
                     <p className="text-muted-foreground">Monday - Friday: 9am - 6pm</p>
                     <p className="text-muted-foreground">Saturday: 10am - 4pm</p>
                     <p className="text-muted-foreground">Sunday: Closed</p>
@@ -124,7 +124,7 @@ const Contact = () => {
             {/* Contact Form */}
             <div className="lg:col-span-2">
               <Card className="p-8 border-0 shadow-sm">
-                <h2 className="text-2xl font-playfair font-bold mb-6">Send Us a Message</h2>
+                <h2 className="text-2xl font-playfair font-bold mb-6">Get in Touch</h2>
                 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -172,7 +172,7 @@ const Contact = () => {
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="How can we help you?"
+                      placeholder="How can we help with your gift needs?"
                       rows={6}
                       required
                     />
@@ -195,7 +195,7 @@ const Contact = () => {
       {/* Map Section */}
       <section className="py-16 bg-muted/30">
         <div className="container">
-          <h2 className="text-2xl font-playfair font-bold mb-8 text-center">Visit Our Store</h2>
+          <h2 className="text-2xl font-playfair font-bold mb-8 text-center">Visit Our Gift Gallery</h2>
           <div className="h-[400px] rounded-xl overflow-hidden">
             {/* Placeholder for map */}
             <div className="w-full h-full bg-secondary/20 flex items-center justify-center">

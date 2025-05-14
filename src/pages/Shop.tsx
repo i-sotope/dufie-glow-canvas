@@ -4,7 +4,7 @@ import PageLayout from "@/components/PageLayout";
 import PageHeader from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Gift, Package, Box } from "lucide-react";
+import { ArrowRight, Gift, Package, Box, ShoppingBag } from "lucide-react";
 
 const categoryLinks = [
   {
@@ -24,7 +24,7 @@ const categoryLinks = [
   {
     title: "New Collections",
     description: "Our latest curated gift sets and seasonal offerings",
-    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=987&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?q=80&w=1170&auto=format&fit=crop",
     link: "/shop/new-arrivals",
     icon: <Package className="h-5 w-5" />
   },

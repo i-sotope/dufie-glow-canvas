@@ -10,97 +10,132 @@ import {
   AccordionItem,
   AccordionTrigger
 } from "@/components/ui/accordion";
-import { Search, X } from "lucide-react";
+import { Search, X, Gift } from "lucide-react";
 
-// Sample FAQ data
+// Gift-focused FAQ data
 const faqData = [
   {
-    category: "Product Information",
+    category: "Gift Selection",
     questions: [
       {
-        id: "pi-1",
-        question: "Are Dufie's products suitable for sensitive skin?",
-        answer: "Yes, our products are formulated with sensitive skin in mind. We avoid common irritants like artificial fragrances, harsh sulfates, and alcohols. However, as everyone's skin is unique, we always recommend doing a patch test with new products."
+        id: "gs-1",
+        question: "How do I choose the perfect gift for someone?",
+        answer: "Consider the recipient's interests, hobbies, and preferences. Our curated collections are organized by occasion, recipient, and price point to help you find something meaningful. Our Gift Finder quiz can also provide personalized recommendations based on your answers."
       },
       {
-        id: "pi-2",
-        question: "Do you test on animals?",
-        answer: "Absolutely not. Dufie's is proudly cruelty-free. We never test on animals, nor do we use ingredients that have been animal-tested. Additionally, many of our products are certified vegan."
+        id: "gs-2",
+        question: "Can I customize my gift?",
+        answer: "Yes! Many of our gifts can be personalized with monograms, custom messages, or color choices. Look for the 'Customizable' tag on product pages. You can also create your own gift set by selecting individual items you'd like to include."
       },
       {
-        id: "pi-3",
-        question: "How long will my product last once opened?",
-        answer: "Most of our products have a Period After Opening (PAO) of 12 months, indicated by the symbol on the packaging. Because we use minimal preservatives, it's important to use clean hands when applying products and to keep containers tightly closed when not in use."
+        id: "gs-3",
+        question: "Do you offer gift recommendations for specific occasions?",
+        answer: "Absolutely. We have curated collections for birthdays, anniversaries, weddings, housewarmings, and more. You can browse by occasion on our homepage or use the filters on our shop page."
       },
       {
-        id: "pi-4",
-        question: "Can I use your products during pregnancy?",
-        answer: "While our products are formulated with safe, natural ingredients, we always recommend consulting with your healthcare provider about your skincare routine during pregnancy, as individual circumstances may vary."
+        id: "gs-4",
+        question: "What's your most popular gift?",
+        answer: "Our Classic Comfort Gift Set consistently ranks as our bestseller, featuring artisanal treats, a hand-poured candle, and a cozy throw. You can browse all our bestsellers in the dedicated section of our shop."
       }
     ]
   },
   {
-    category: "Orders & Shipping",
+    category: "Gift Packaging & Presentation",
     questions: [
       {
-        id: "os-1",
-        question: "How long does shipping take?",
-        answer: "Domestic orders typically arrive within 3-5 business days. International shipping times vary by location but generally range from 7-14 business days. You'll receive tracking information once your order ships."
+        id: "gp-1",
+        question: "Is gift wrapping available?",
+        answer: "Yes, we offer premium gift wrapping services for all our products. During checkout, you can select from several wrapping paper designs and ribbon options. Gift wrapping is complimentary for orders over $75."
       },
       {
-        id: "os-2",
+        id: "gp-2",
+        question: "Can I include a personalized message with my gift?",
+        answer: "Of course! During checkout, you'll have the option to add a custom message that will be elegantly handwritten on one of our signature gift cards and included with your package."
+      },
+      {
+        id: "gp-3",
+        question: "How are gifts packaged for shipping?",
+        answer: "All gifts are carefully packaged in our signature gift boxes with protective materials to ensure they arrive in perfect condition. Gift sets are arranged attractively within the box, making them ready to present upon arrival."
+      },
+      {
+        id: "gp-4",
+        question: "Do you offer sustainable packaging options?",
+        answer: "Yes, sustainability is central to our mission. All our packaging materials are recyclable or biodegradable, including our gift boxes, tissue paper, and void fill. We avoid plastic wherever possible."
+      }
+    ]
+  },
+  {
+    category: "Shipping & Delivery",
+    questions: [
+      {
+        id: "sd-1",
+        question: "Can I ship directly to the gift recipient?",
+        answer: "Absolutely! During checkout, you can enter a different shipping address for the recipient. We'll ensure no pricing information is included in the package, and you can add a gift message as well."
+      },
+      {
+        id: "sd-2",
+        question: "How quickly will my gift be delivered?",
+        answer: "Standard shipping takes 3-5 business days. We also offer expedited shipping (2 business days) and overnight delivery options. Last-minute gifters, we've got you covered!"
+      },
+      {
+        id: "sd-3",
         question: "Do you ship internationally?",
-        answer: "Yes, we ship to most countries worldwide. International shipping costs and delivery times are calculated at checkout based on your location. Please note that customers are responsible for any customs duties or import taxes."
+        answer: "Yes, we ship to most countries worldwide. International shipping costs and delivery times vary by location. Please note that customers are responsible for any customs duties or import taxes."
       },
       {
-        id: "os-3",
-        question: "How can I track my order?",
-        answer: "Once your order ships, you'll receive a confirmation email with tracking information. You can also view your order status by logging into your account on our website."
-      },
-      {
-        id: "os-4",
-        question: "What payment methods do you accept?",
-        answer: "We accept all major credit cards (Visa, Mastercard, American Express), PayPal, Apple Pay, and Google Pay. All payments are securely processed and encrypted."
+        id: "sd-4",
+        question: "Can I schedule a delivery for a specific date?",
+        answer: "Yes, you can select a future delivery date during checkout. This is perfect for ensuring gifts arrive exactly on birthdays, anniversaries, or other special occasions."
       }
     ]
   },
   {
-    category: "Returns & Refunds",
+    category: "Returns & Exchanges",
     questions: [
       {
-        id: "rr-1",
-        question: "What is your return policy?",
-        answer: "We offer a 30-day satisfaction guarantee. If you're not completely satisfied with your purchase, you may return unopened products for a full refund, or lightly used products for store credit."
+        id: "re-1",
+        question: "What if the recipient doesn't like their gift?",
+        answer: "We offer easy exchanges or store credit for gifts returned within 30 days of delivery. The recipient can initiate this process themselves without needing the original purchaser's information."
       },
       {
-        id: "rr-2",
-        question: "How do I initiate a return?",
-        answer: "To initiate a return, please contact our customer service team at returns@dufies.com with your order number and reason for return. We'll provide you with a return shipping label and instructions."
+        id: "re-2",
+        question: "How do I return or exchange a gift?",
+        answer: "To initiate a return, contact our customer service team at returns@dufies.com with your order number or the recipient's details. We'll provide a return shipping label and instructions."
       },
       {
-        id: "rr-3",
-        question: "How long does it take to process a refund?",
-        answer: "Once we receive your returned items and approve the return, refunds typically process within 5-7 business days. The time it takes to appear in your account depends on your payment method and financial institution."
+        id: "re-3",
+        question: "What items are non-returnable?",
+        answer: "Personalized or custom gifts cannot be returned unless there's a manufacturing defect. Perishable items like food products also cannot be returned once delivered."
+      },
+      {
+        id: "re-4",
+        question: "Do you offer gift receipts?",
+        answer: "Yes, you can request a gift receipt during checkout which will be included with your gift. This allows the recipient to exchange the item if needed without seeing the price."
       }
     ]
   },
   {
-    category: "Sustainability",
+    category: "Corporate & Bulk Gifting",
     questions: [
       {
-        id: "s-1",
-        question: "Is your packaging recyclable?",
-        answer: "We're committed to using sustainable packaging. Our glass containers are recyclable, and our shipping materials are made from recycled, biodegradable materials. We're working toward our goal of 100% plastic-free packaging by 2025."
+        id: "cg-1",
+        question: "Do you offer corporate gifting services?",
+        answer: "Yes, our dedicated corporate gifting team can help with employee appreciation, client gifts, and event gifting. We offer volume discounts, custom branding options, and streamlined delivery to multiple addresses."
       },
       {
-        id: "s-2",
-        question: "Do you have a recycling program?",
-        answer: "Yes! Our Circular Beauty program allows customers to return empty Dufie's containers to be cleaned, sterilized, and refilled. In exchange, customers receive store credit for participating."
+        id: "cg-2",
+        question: "Can I add my company logo to gifts?",
+        answer: "Absolutely! Many of our products can be customized with your company logo. We also offer custom gift boxes and packaging featuring your branding."
       },
       {
-        id: "s-3",
-        question: "Are your ingredients organic?",
-        answer: "Many of our botanical ingredients are certified organic, and we prioritize organic sourcing whenever possible. Currently, about 80% of our plant-based ingredients come from certified organic farms or controlled wild harvesting."
+        id: "cg-3",
+        question: "Is there a minimum order quantity for corporate gifts?",
+        answer: "Our corporate program starts at orders of 10 or more gifts. Larger orders qualify for increased discounts, with special pricing available for orders of 50+ gifts."
+      },
+      {
+        id: "cg-4",
+        question: "How do I place a bulk order?",
+        answer: "Please contact our corporate gifting team at corporate@dufies.com with details about your requirements. We'll provide a custom quote and work with you to select the perfect gifts for your occasion."
       }
     ]
   }
@@ -135,7 +170,7 @@ const FAQs = () => {
     <PageLayout>
       <PageHeader 
         title="Frequently Asked Questions" 
-        subtitle="Find answers to common questions about our products, ordering, shipping, and more."
+        subtitle="Find answers to common questions about our gifts, ordering, shipping, and more."
       />
       
       <section className="py-16">
@@ -234,7 +269,7 @@ const FAQs = () => {
         <div className="container max-w-4xl text-center">
           <h2 className="text-3xl font-playfair font-bold mb-6">Still Have Questions?</h2>
           <p className="text-muted-foreground mb-8">
-            Can't find the answer you're looking for? Our customer support team is here to help.
+            Can't find the answer you're looking for? Our gifting specialists are here to help.
             Contact us and we'll get back to you as soon as possible.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -242,7 +277,7 @@ const FAQs = () => {
               Contact Support
             </Button>
             <Button variant="outline" className="rounded-full px-8">
-              Live Chat
+              Live Chat with a Gift Expert
             </Button>
           </div>
         </div>

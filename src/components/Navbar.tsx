@@ -1,17 +1,8 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { 
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuLink
-} from "@/components/ui/navigation-menu";
 import { useAuth } from "@/contexts/AuthContext";
 import SignInButton from "./auth/SignInButton";
 import UserDropdown from "./auth/UserDropdown";
@@ -40,21 +31,11 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="text-sm font-medium hover:text-primary/80 transition-colors">
-            Home
-          </Link>
-          <Link to="/shop" className="text-sm font-medium hover:text-primary/80 transition-colors">
-            Shop
-          </Link>
-          <Link to="/about" className="text-sm font-medium hover:text-primary/80 transition-colors">
-            About
-          </Link>
-          <Link to="/journal" className="text-sm font-medium hover:text-primary/80 transition-colors">
-            Journal
-          </Link>
-          <Link to="/contact" className="text-sm font-medium hover:text-primary/80 transition-colors">
-            Contact
-          </Link>
+          <Link to="/" className="text-sm font-medium hover:text-primary/80 transition-colors">Home</Link>
+          <Link to="/shop" className="text-sm font-medium hover:text-primary/80 transition-colors">Shop</Link>
+          <Link to="/about" className="text-sm font-medium hover:text-primary/80 transition-colors">About</Link>
+          <Link to="/journal" className="text-sm font-medium hover:text-primary/80 transition-colors">Journal</Link>
+          <Link to="/contact" className="text-sm font-medium hover:text-primary/80 transition-colors">Contact</Link>
         </nav>
 
         {/* Action Buttons */}
@@ -96,7 +77,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-white dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 md:hidden">
+        <div className="fixed inset-0 z-50 bg-white dark:bg-gray-900 shadow-lg md:hidden">
           {/* Close button */}
           <Button
             variant="ghost"

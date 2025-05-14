@@ -6,16 +6,31 @@ interface SignInButtonProps {
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
   size?: "default" | "sm" | "lg" | "icon";
   className?: string;
+  onClick?: () => void; // Add onClick prop
 }
 
-const SignInButton = ({ variant = "default", size = "default", className = "" }: SignInButtonProps) => {
+const SignInButton = ({ 
+  variant = "default", 
+  size = "default", 
+  className = "",
+  onClick 
+}: SignInButtonProps) => {
   const { signInWithGoogle, loading } = useAuth();
+
+  // Handle click with both the Google sign-in and any additional onClick function
+  const handleClick = () => {
+    signInWithGoogle();
+    // If onClick is provided, call it after triggering sign in
+    if (onClick) {
+      onClick();
+    }
+  };
 
   return (
     <Button 
       variant={variant} 
       size={size}
-      onClick={signInWithGoogle} 
+      onClick={handleClick}
       disabled={loading}
       className={`flex items-center gap-2 ${className}`}
     >

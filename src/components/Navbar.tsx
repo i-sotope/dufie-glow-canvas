@@ -96,7 +96,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-background pt-16 dark:bg-gray-800/95 bg-white/95">
+        <div className="md:hidden fixed inset-0 z-50 pt-16 bg-background dark:bg-gray-900">
           <nav className="container flex flex-col space-y-6 py-8">
             <Link 
               to="/" 

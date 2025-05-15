@@ -98,6 +98,7 @@ export type Database = {
           id: string
           items: Json
           order_date: string
+          payment_method: string | null
           shipping_location: string
           status: string
           total_price: number
@@ -107,6 +108,7 @@ export type Database = {
           id?: string
           items: Json
           order_date?: string
+          payment_method?: string | null
           shipping_location: string
           status?: string
           total_price: number
@@ -116,6 +118,7 @@ export type Database = {
           id?: string
           items?: Json
           order_date?: string
+          payment_method?: string | null
           shipping_location?: string
           status?: string
           total_price?: number

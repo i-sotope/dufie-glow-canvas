@@ -11,7 +11,7 @@ const Hero = () => {
           <div className="space-y-6 animate-fade-in">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold leading-tight tracking-tight">
               Thoughtful Gifts <br />
-              <span className="text-accent-foreground"><h1 className="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold leading-tight tracking-tight">For Every Occasion</h1></span>
+              <span className="text-accent-foreground">For Every Occasion</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-md">
               We curate, wrap, and deliver meaningful gifts that celebrate special moments and strengthen your relationships with loved ones.

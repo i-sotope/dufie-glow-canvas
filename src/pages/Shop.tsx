@@ -4,7 +4,7 @@ import PageLayout from "@/components/PageLayout";
 import PageHeader from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Gift, Package, Box, ShoppingBag } from "lucide-react";
+import { ArrowRight, Gift, Package, Box, ShoppingBag, Heart } from "lucide-react";
 
 const categoryLinks = [
   {
@@ -19,7 +19,7 @@ const categoryLinks = [
     description: "Customer favorites and our most beloved gift selections",
     image: "https://images.unsplash.com/photo-1512909006721-3d6018887383?q=80&w=1170&auto=format&fit=crop",
     link: "/shop/bestsellers",
-    icon: <Gift className="h-5 w-5" />
+    icon: <Heart className="h-5 w-5" />
   },
   {
     title: "New Collections",
@@ -31,7 +31,7 @@ const categoryLinks = [
   {
     title: "Gift Sets",
     description: "Curated collections for every occasion and relationship",
-    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=987&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1607083206968-13611e3d76db?q=80&w=1115&auto=format&fit=crop",
     link: "/shop/gift-sets",
     icon: <Box className="h-5 w-5" />
   }
@@ -41,8 +41,8 @@ const Shop = () => {
   return (
     <PageLayout>
       <PageHeader 
-        title="Our Collections" 
-        subtitle="Discover thoughtfully curated gifts designed to celebrate special moments and strengthen relationships."
+        title="Gift Collections" 
+        subtitle="Discover thoughtfully curated gifts designed to celebrate special relationships and strengthen bonds."
       />
       
       <div className="container py-16">
@@ -72,6 +72,15 @@ const Shop = () => {
               </Card>
             </Link>
           ))}
+        </div>
+        
+        <div className="mt-8 text-center">
+          <h2 className="text-2xl font-playfair font-bold mb-4">The Gift of Connection</h2>
+          <p className="text-muted-foreground max-w-3xl mx-auto mb-8">
+            Our carefully selected gifts are designed not just as beautiful presents, but as meaningful 
+            expressions that strengthen the bonds between people. Each gift tells a story and creates moments 
+            that last beyond the unwrapping.
+          </p>
         </div>
       </div>
     </PageLayout>

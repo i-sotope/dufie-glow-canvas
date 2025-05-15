@@ -1,14 +1,15 @@
+
 import { useState, useEffect } from "react";
 import PageLayout from "@/components/PageLayout";
 import PageHeader from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Star, Filter, X, ChevronDown } from "lucide-react";
+import { Star, Filter, X, ChevronDown, Gift, Heart } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/sonner";
 
-// Define Product interface (ensure it matches your DB schema)
+// Define Product interface
 interface Product {
   id: string;
   name: string;
@@ -16,20 +17,19 @@ interface Product {
   price: number;
   rating: number;
   image_url: string;
-  category: string; // Needed for filtering
-  tags: string[];   // Needed for filtering
+  category: string;
+  tags: string[];
 }
 
-// Remove sample product data
-// const products = [ ... ];
-
-// Keep hardcoded filters for now, could be fetched later
-const categories = ["All", "Cleansers", "Toners", "Serums", "Moisturizers", "Eye Care", "Masks", "Exfoliators"];
-const tags = ["All", "Hydrating", "Brightening", "Anti-aging", "Soothing", "Purifying", "Restorative", "Bestseller", "New"];
+// Update categories and tags for gift focus
+const categories = ["All", "Gift Sets", "Skincare", "Self-Care", "Occasion Gifts"];
+const tags = ["All", "Hydrating", "Brightening", "Bestseller", "New", "Gift", "Restorative", "Soothing", "Purifying"];
+const occasions = ["All Occasions", "Anniversary", "Birthday", "Wedding", "Thank You", "Self-Care"];
 
 const AllProducts = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeTag, setActiveTag] = useState("All");
+  const [activeOccasion, setActiveOccasion] = useState("All Occasions");
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const { addToCart, isLoading: isCartLoading } = useCart();
 
@@ -44,7 +44,6 @@ const AllProducts = () => {
       setIsLoading(true);
       setError(null);
       try {
-        // Fetch all products - select columns needed for display and filtering
         const { data, error: dbError } = await supabase
           .from('products')
           .select('id, name, description, price, rating, image_url, category, tags'); 
@@ -71,7 +70,17 @@ const AllProducts = () => {
     const tagsArray = Array.isArray(product.tags) ? product.tags : []; 
     const categoryMatch = activeCategory === "All" || product.category === activeCategory;
     const tagMatch = activeTag === "All" || tagsArray.includes(activeTag);
-    return categoryMatch && tagMatch;
+    
+    // For occasions, we'll use a simple matching approach
+    // In a real app, you might want to have an 'occasion' field in your database
+    const occasionMatch = activeOccasion === "All Occasions" || 
+      (activeOccasion === "Self-Care" && product.name.toLowerCase().includes("self-care")) ||
+      (activeOccasion === "Anniversary" && product.name.toLowerCase().includes("anniversary")) ||
+      (activeOccasion === "Birthday" && tagsArray.includes("Gift")) ||
+      (activeOccasion === "Wedding" && product.name.toLowerCase().includes("bride")) ||
+      (activeOccasion === "Thank You" && product.name.toLowerCase().includes("gratitude"));
+    
+    return categoryMatch && tagMatch && occasionMatch;
   });
 
   const renderStars = (rating: number) => {
@@ -93,9 +102,8 @@ const AllProducts = () => {
     // Pass the correct structure expected by CartContext
     addToCart({
       product_id: product.id,
-      gift_set_id: null, // Explicitly null for products
+      gift_set_id: null,
       quantity: 1,
-       // Pass other details needed by CartContext (name, price, image)
       name: product.name,
       price: product.price,
       image: product.image_url
@@ -105,16 +113,16 @@ const AllProducts = () => {
   return (
     <PageLayout>
       <PageHeader 
-        title="All Products" 
-        subtitle="Discover our complete collection of plant-based skincare solutions."
+        title="Thoughtful Gifts" 
+        subtitle="Discover our curated collection of meaningful gifts designed to strengthen relationships."
       />
       
       <div className="container py-16">
         <div className="flex justify-between items-center mb-8">
           <div>
             <p className="text-muted-foreground">
-              {!isLoading && `Showing ${filteredProducts.length} of ${allProducts.length} products`}
-              {isLoading && 'Loading products...'}
+              {!isLoading && `Showing ${filteredProducts.length} of ${allProducts.length} gifts`}
+              {isLoading && 'Loading gifts...'}
             </p>
           </div>
           
@@ -157,7 +165,7 @@ const AllProducts = () => {
               
               <div>
                 <h3 className="font-medium mb-4 flex items-center">
-                  Product Tags
+                  Gift Tags
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -176,6 +184,28 @@ const AllProducts = () => {
                   ))}
                 </div>
               </div>
+
+              <div>
+                <h3 className="font-medium mb-4 flex items-center">
+                  Occasions
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </h3>
+                <div className="space-y-2">
+                  {occasions.map(occasion => (
+                    <button 
+                      key={occasion}
+                      className={`text-sm block w-full text-left py-1 ${
+                        activeOccasion === occasion 
+                          ? 'font-medium text-foreground' 
+                          : 'text-muted-foreground hover:text-foreground'
+                      }`}
+                      onClick={() => setActiveOccasion(occasion)}
+                    >
+                      {occasion}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
           
@@ -183,7 +213,7 @@ const AllProducts = () => {
           {isMobileFilterOpen && (
             <div className="md:hidden fixed inset-0 bg-background z-50 p-6 overflow-auto">
               <div className="flex justify-between items-center mb-8">
-                <h3 className="text-xl font-medium">Filters</h3>
+                <h3 className="text-xl font-medium">Gift Filters</h3>
                 <Button variant="ghost" onClick={() => setIsMobileFilterOpen(false)}>
                   <X className="h-5 w-5" />
                 </Button>
@@ -213,7 +243,7 @@ const AllProducts = () => {
                 </div>
                 
                 <div>
-                  <h3 className="font-medium mb-4">Product Tags</h3>
+                  <h3 className="font-medium mb-4">Gift Tags</h3>
                   <div className="flex flex-wrap gap-2">
                     {tags.map(tag => (
                       <button
@@ -229,6 +259,28 @@ const AllProducts = () => {
                         }}
                       >
                         {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-medium mb-4">Occasions</h3>
+                  <div className="space-y-2">
+                    {occasions.map(occasion => (
+                      <button 
+                        key={occasion}
+                        className={`text-sm block w-full text-left py-2 ${
+                          activeOccasion === occasion 
+                            ? 'font-medium text-foreground' 
+                            : 'text-muted-foreground'
+                        }`}
+                        onClick={() => {
+                          setActiveOccasion(occasion);
+                          setIsMobileFilterOpen(false);
+                        }}
+                      >
+                        {occasion}
                       </button>
                     ))}
                   </div>
@@ -262,7 +314,7 @@ const AllProducts = () => {
 
             {/* No Products State */}
             {!isLoading && !error && filteredProducts.length === 0 && (
-              <p className="text-muted-foreground text-center">No products match your filters.</p>
+              <p className="text-muted-foreground text-center">No gifts match your filters.</p>
             )}
 
             {/* Render Products */}
@@ -279,10 +331,23 @@ const AllProducts = () => {
                         alt={product.name} 
                         className="w-full h-full object-cover transition-transform hover:scale-105 duration-700"
                       />
+                      {product.category === "Gift Sets" && (
+                        <div className="absolute top-3 left-3 bg-primary text-primary-foreground rounded-full px-3 py-1 text-xs font-medium flex items-center">
+                          <Gift className="h-3 w-3 mr-1" />
+                          Gift Set
+                        </div>
+                      )}
                     </div>
                     <div className="p-6 space-y-3">
-                      <div className="flex items-center space-x-1">
-                        {renderStars(product.rating)}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-1">
+                          {renderStars(product.rating)}
+                        </div>
+                        {Array.isArray(product.tags) && product.tags.includes("Bestseller") && (
+                          <span className="inline-flex items-center text-xs font-medium text-amber-600">
+                            <Heart className="h-3 w-3 mr-1 fill-amber-600" /> Loved
+                          </span>
+                        )}
                       </div>
                       <h3 className="font-playfair font-semibold text-lg">{product.name}</h3>
                       <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>

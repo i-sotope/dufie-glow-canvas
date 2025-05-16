@@ -28,7 +28,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import PageLayout from "@/components/PageLayout";
 import { useToast } from "@/hooks/use-toast";
-import { Edit, X } from "lucide-react";
+import { Edit, X, Trash2 } from "lucide-react";
 import { Json } from "@/integrations/supabase/types";
 
 // Define an interface for the order structure based on your table
@@ -78,6 +78,7 @@ const OrdersPage: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editStatus, setEditStatus] = useState<string>('');
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState<boolean>(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -221,6 +222,37 @@ const OrdersPage: React.FC = () => {
       });
     }
   };
+  
+  const handleDeleteOrder = async () => {
+    if (!selectedOrder) return;
+
+    try {
+      const { error } = await supabase
+        .from('orders')
+        .delete()
+        .eq('id', selectedOrder.id)
+        .eq('user_id', user?.id);
+
+      if (error) throw error;
+
+      // Update the local state
+      setOrders(orders.filter(order => order.id !== selectedOrder.id));
+      
+      setIsDeleteConfirmOpen(false);
+      setIsDialogOpen(false);
+      toast({
+        title: "Order Deleted",
+        description: "Your order has been successfully deleted.",
+      });
+    } catch (err: any) {
+      console.error("Error deleting order:", err);
+      toast({
+        title: "Error",
+        description: "Failed to delete your order. Please try again later.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const canCancel = (status: string) => {
     return ['Pending', 'Processing'].includes(status);
@@ -228,6 +260,17 @@ const OrdersPage: React.FC = () => {
 
   const canEdit = (status: string) => {
     return !['Delivered', 'Cancelled'].includes(status);
+  };
+
+  const canDelete = (status: string) => {
+    return true; // Allow deletion of any order regardless of status
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount);
   };
 
   return (
@@ -274,7 +317,7 @@ const OrdersPage: React.FC = () => {
                         </Badge>
                       </TableCell>
                       <TableCell className="capitalize">{order.payment_method || "Credit Card"}</TableCell>
-                      <TableCell className="text-right">${order.total_price.toFixed(2)}</TableCell>
+                      <TableCell className="text-right">{formatCurrency(order.total_price)}</TableCell>
                       <TableCell className="text-right">
                         <Button 
                           variant="outline" 
@@ -352,14 +395,14 @@ const OrdersPage: React.FC = () => {
                     <div key={index} className="flex justify-between py-2 border-b last:border-0">
                       <div>
                         <p className="font-medium">{item.name}</p>
-                        <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
+                        <p className="text-sm text-muted-foreground">Qty: {item.quantity} × {formatCurrency(item.price)}</p>
                       </div>
-                      <p>${(item.price * item.quantity).toFixed(2)}</p>
+                      <p>{formatCurrency(item.price * item.quantity)}</p>
                     </div>
                   ))}
                   <div className="flex justify-between pt-2 font-bold">
                     <p>Total</p>
-                    <p>${selectedOrder.total_price.toFixed(2)}</p>
+                    <p>{formatCurrency(selectedOrder.total_price)}</p>
                   </div>
                 </div>
               </div>
@@ -386,20 +429,53 @@ const OrdersPage: React.FC = () => {
                     >
                       Close
                     </Button>
-                    {canCancel(selectedOrder.status) && (
-                      <Button 
-                        variant="destructive"
-                        onClick={() => handleCancelOrder(selectedOrder.id)}
-                        className="ml-auto"
-                      >
-                        Cancel Order
-                      </Button>
-                    )}
+                    
+                    <div className="ml-auto flex gap-2">
+                      {canCancel(selectedOrder.status) && (
+                        <Button 
+                          variant="destructive"
+                          onClick={() => handleCancelOrder(selectedOrder.id)}
+                        >
+                          Cancel Order
+                        </Button>
+                      )}
+                      
+                      {canDelete(selectedOrder.status) && (
+                        <Button 
+                          variant="outline"
+                          className="flex items-center gap-1 border-red-200 hover:bg-red-100 hover:text-red-700"
+                          onClick={() => setIsDeleteConfirmOpen(true)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                          Delete
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 )}
               </DialogFooter>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={isDeleteConfirmOpen} onOpenChange={setIsDeleteConfirmOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this order? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end gap-2 mt-4">
+            <Button variant="outline" onClick={() => setIsDeleteConfirmOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDeleteOrder}>
+              Delete Order
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </PageLayout>

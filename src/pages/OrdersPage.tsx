@@ -29,6 +29,7 @@ import { Badge } from "@/components/ui/badge";
 import PageLayout from "@/components/PageLayout";
 import { useToast } from "@/hooks/use-toast";
 import { Edit, X } from "lucide-react";
+import { Json } from "@/integrations/supabase/types";
 
 // Define an interface for the order structure based on your table
 interface Order {
@@ -46,6 +47,18 @@ interface OrderItem {
   name: string;
   price: number;
   quantity: number;
+}
+
+// Define a type for the raw order data from Supabase
+interface RawOrder {
+  id: string;
+  order_date: string;
+  status: string;
+  total_price: number;
+  payment_method: string | null;
+  shipping_location: string;
+  items: Json;
+  user_id: string | null;
 }
 
 const statusColors: Record<string, string> = {
@@ -105,7 +118,26 @@ const OrdersPage: React.FC = () => {
           throw fetchError;
         }
 
-        setOrders(data as Order[] || []);
+        // Transform raw data to match Order interface
+        const transformedOrders: Order[] = (data as RawOrder[]).map(rawOrder => ({
+          id: rawOrder.id,
+          order_date: rawOrder.order_date,
+          status: rawOrder.status,
+          total_price: rawOrder.total_price,
+          payment_method: rawOrder.payment_method || 'Credit Card',
+          shipping_location: rawOrder.shipping_location,
+          // Parse the items JSON into OrderItem[]
+          items: Array.isArray(rawOrder.items) 
+            ? rawOrder.items.map((item: any) => ({
+                id: item.id || '',
+                name: item.name || '',
+                price: item.price || 0,
+                quantity: item.quantity || 0
+              }))
+            : []
+        }));
+
+        setOrders(transformedOrders);
       } catch (err: any) {
         console.error("Error fetching orders:", err);
         setError(err.message || 'Failed to fetch orders.');

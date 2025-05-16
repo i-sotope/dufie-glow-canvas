@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
@@ -18,20 +19,20 @@ const Navbar = () => {
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-background border-b shadow-sm">
+    <header className="sticky top-0 z-50 bg-background border-b shadow-sm animate-fade-in">
       <div className="container flex items-center justify-between py-4">
         {/* Logo */}
-        <Link to="/" className="font-playfair text-2xl font-semibold tracking-tight">
+        <Link to="/" className="font-playfair text-2xl font-semibold tracking-tight transition-all duration-300 hover:scale-105">
           DUFIE'S
         </Link>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="text-sm font-medium hover:text-primary/80 transition-colors">Home</Link>
-          <Link to="/shop" className="text-sm font-medium hover:text-primary/80 transition-colors">Shop</Link>
-          <Link to="/about" className="text-sm font-medium hover:text-primary/80 transition-colors">About</Link>
-          <Link to="/journal" className="text-sm font-medium hover:text-primary/80 transition-colors">Journal</Link>
-          <Link to="/contact" className="text-sm font-medium hover:text-primary/80 transition-colors">Contact</Link>
+          <Link to="/" className="text-sm font-medium hover:text-primary/80 transition-all duration-300 hover:-translate-y-0.5">Home</Link>
+          <Link to="/shop" className="text-sm font-medium hover:text-primary/80 transition-all duration-300 hover:-translate-y-0.5">Shop</Link>
+          <Link to="/about" className="text-sm font-medium hover:text-primary/80 transition-all duration-300 hover:-translate-y-0.5">About</Link>
+          <Link to="/journal" className="text-sm font-medium hover:text-primary/80 transition-all duration-300 hover:-translate-y-0.5">Journal</Link>
+          <Link to="/contact" className="text-sm font-medium hover:text-primary/80 transition-all duration-300 hover:-translate-y-0.5">Contact</Link>
         </nav>
 
         {/* Actions */}
@@ -47,11 +48,11 @@ const Navbar = () => {
           )}
 
           <Link to="/cart">
-            <Button variant="ghost" size="icon" className="rounded-full relative">
+            <Button variant="ghost" size="icon" className="rounded-full relative transition-transform duration-300 hover:scale-110">
               <ShoppingCart className="h-5 w-5" />
               <span className="sr-only">Cart</span>
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full w-4 h-4 text-xs flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full w-4 h-4 text-xs flex items-center justify-center animate-pulse">
                   {totalItems}
                 </span>
               )}
@@ -62,7 +63,7 @@ const Navbar = () => {
           <Button 
             variant="ghost"
             size="icon"
-            className="md:hidden rounded-full"
+            className="md:hidden rounded-full transition-transform duration-300 hover:scale-110"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -78,11 +79,11 @@ const Navbar = () => {
         }`}
       >
         <div className="container flex flex-col space-y-4">
-          <Link to="/" onClick={closeMenu} className="text-base font-medium text-foreground">Home</Link>
-          <Link to="/shop" onClick={closeMenu} className="text-base font-medium text-foreground">Shop</Link>
-          <Link to="/about" onClick={closeMenu} className="text-base font-medium text-foreground">About</Link>
-          <Link to="/journal" onClick={closeMenu} className="text-base font-medium text-foreground">Journal</Link>
-          <Link to="/contact" onClick={closeMenu} className="text-base font-medium text-foreground">Contact</Link>
+          <Link to="/" onClick={closeMenu} className="text-base font-medium text-foreground transition-all duration-300 hover:translate-x-1 hover:text-primary">Home</Link>
+          <Link to="/shop" onClick={closeMenu} className="text-base font-medium text-foreground transition-all duration-300 hover:translate-x-1 hover:text-primary">Shop</Link>
+          <Link to="/about" onClick={closeMenu} className="text-base font-medium text-foreground transition-all duration-300 hover:translate-x-1 hover:text-primary">About</Link>
+          <Link to="/journal" onClick={closeMenu} className="text-base font-medium text-foreground transition-all duration-300 hover:translate-x-1 hover:text-primary">Journal</Link>
+          <Link to="/contact" onClick={closeMenu} className="text-base font-medium text-foreground transition-all duration-300 hover:translate-x-1 hover:text-primary">Contact</Link>
           {!user && (
             <div>
               <SignInButton onClick={closeMenu} />

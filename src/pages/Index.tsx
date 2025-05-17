@@ -5,7 +5,6 @@ import Hero from "@/components/Hero";
 import FeaturedProducts from "@/components/FeaturedProducts";
 import BrandStory from "@/components/BrandStory";
 import Testimonials from "@/components/Testimonials";
-import BlogSection from "@/components/BlogSection";
 import Newsletter from "@/components/Newsletter";
 
 const Index = () => {
@@ -39,7 +38,6 @@ const Index = () => {
       <FeaturedProducts />
       <BrandStory />
       <Testimonials />
-      <BlogSection />
       <Newsletter />
     </PageLayout>
   );

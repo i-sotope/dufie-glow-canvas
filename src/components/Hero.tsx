@@ -27,14 +27,59 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Hero Image */}
-          <div className="relative h-[400px] md:h-[500px] lg:h-[600px] rounded-xl overflow-hidden">
-            <img 
-              src="https://pngtree.com/freepng/a-gift-box-ribbon-wrapped-gift-box-purple-ribbon-banded-gift-box-gift-box_3895690.html" 
-              alt="Beautifully wrapped gift boxes with ribbons" 
-              className="w-full h-full object-cover rounded-xl"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/20"></div>
+          {/* Hero Image - SVG Gift Boxes */}
+          <div className="relative h-[400px] md:h-[500px] lg:h-[600px] rounded-xl overflow-hidden flex items-center justify-center">
+            <svg width="100%" height="100%" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+              <style>
+                {`.box { rx: 10; ry: 10; }
+                .ribbon-vert, .ribbon-horiz { opacity: 0.8; }
+                .bow { opacity: 0.9; }`}
+              </style>
+
+              {/* Top-left Box (Peach) */}
+              <rect x="30" y="30" width="200" height="200" className="box" fill="#e9c5a7"/>
+              <rect x="120" y="30" width="20" height="200" className="ribbon-vert" fill="#dcb275"/>
+              <rect x="30" y="120" width="200" height="20" className="ribbon-horiz" fill="#dcb275"/>
+              <path className="bow" fill="#dcb275"
+                d="M130 130 
+                   c -30 -30, -50 -10, -20 20 
+                   c -30 30, -10 50, 20 20 
+                   c 30 30, 50 10, 20 -20 
+                   c 30 -30, 10 -50, -20 -20 z"/>
+
+              {/* Top-right Box (Red) */}
+              <rect x="310" y="30" width="200" height="200" className="box" fill="#a31e1e"/>
+              <rect x="400" y="30" width="20" height="200" className="ribbon-vert" fill="#820e0e"/>
+              <rect x="310" y="120" width="200" height="20" className="ribbon-horiz" fill="#820e0e"/>
+              <path className="bow" fill="#820e0e"
+                d="M410 130 
+                   c -30 -30, -50 -10, -20 20 
+                   c -30 30, -10 50, 20 20 
+                   c 30 30, 50 10, 20 -20 
+                   c 30 -30, 10 -50, -20 -20 z"/>
+
+              {/* Bottom-left Box (Gold) */}
+              <rect x="30" y="310" width="200" height="200" className="box" fill="#d9b56e"/>
+              <rect x="120" y="310" width="20" height="200" className="ribbon-vert" fill="#c89a50"/>
+              <rect x="30" y="400" width="200" height="20" className="ribbon-horiz" fill="#c89a50"/>
+              <path className="bow" fill="#c89a50"
+                d="M130 410 
+                   c -30 -30, -50 -10, -20 20 
+                   c -30 30, -10 50, 20 20 
+                   c 30 30, 50 10, 20 -20 
+                   c 30 -30, 10 -50, -20 -20 z"/>
+
+              {/* Bottom-right Box (Ivory) */}
+              <rect x="310" y="310" width="200" height="200" className="box" fill="#f1ece2"/>
+              <rect x="400" y="310" width="20" height="200" className="ribbon-vert" fill="#ddd8ce"/>
+              <rect x="310" y="400" width="200" height="20" className="ribbon-horiz" fill="#ddd8ce"/>
+              <path className="bow" fill="#ddd8ce"
+                d="M410 410 
+                   c -30 -30, -50 -10, -20 20 
+                   c -30 30, -10 50, 20 20 
+                   c 30 30, 50 10, 20 -20 
+                   c 30 -30, 10 -50, -20 -20 z"/>
+            </svg>
           </div>
         </div>
       </div>
